@@ -1,0 +1,44 @@
+
+# H2 Web Console (H2ConsoleProperties)
+spring:
+  h2:
+    console:
+      enabled: true # Whether to enable the console.
+      path: /h2-console # Path at which the console is available.
+      settings:
+        trace: false # Whether to enable trace output.
+        web-allow-others: false # Whether to enable remote access.
+  datasource:
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+    type: com.zaxxer.hikari.HikariDataSource
+    # AUTO_SERVER=true 启动自动混合模式，允许开启多个连接，该参数不支持在内存中运行模式
+    # DB_CLOSE_ON_EXIT 当虚拟机退出时并不关闭数据库
+    url: jdbc:h2:file:./h2/test;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=TRUE;IFEXISTS=false
+    driver-class-name: org.h2.Driver
+    username: zero
+    password: zero
+    # 初始化数据库
+    schema: file:./db/schema.ddl
+    # 数据文件
+    data: file:./db/data.ddl
+    # 初始化数据库，第一次启动请使用 always，初始化后请修改为 never
+    initialization-mode: always
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sw.demo.model
+
+pagehelper:
+  helperDialect: h2
+  reasonable: true
+  supportMethodsArguments: true
+  default-count: false
+  offsetAsPageNum: true

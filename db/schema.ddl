@@ -1,0 +1,7 @@
+set collation ICU4J_CHINESE_CHINA;
+
+CREATE TABLE IF NOT EXISTS `test`
+(
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+);
