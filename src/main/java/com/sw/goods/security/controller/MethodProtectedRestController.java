@@ -1,5 +1,7 @@
 package com.sw.goods.security.controller;
 
+import com.sw.goods.constent.Result;
+import com.sw.goods.vo.HttpResult;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,8 @@ public class MethodProtectedRestController {
      **/
     @RequestMapping(method = RequestMethod.GET)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getProtectedGreeting() {
-        return ResponseEntity.ok("Greetings from admin protected method!");
+    public ResponseEntity<HttpResult<?>> getProtectedGreeting() {
+        return ResponseEntity.ok(new HttpResult<>(Result.SUCCESS_CODE,"","Greetings from admin protected method!"));
     }
 
 }

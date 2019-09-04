@@ -1,0 +1,31 @@
+package com.sw.goods.constent;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author songwen
+ * gmail: zero.hero.he@gmail.com
+ * Created on 2019/9/3
+ */
+public class Result {
+
+    private static final Map<String, String> CODE_DESC = new HashMap<>();
+
+    public static final String SUCCESS_CODE = "000";
+    public static final String FAIL_CODE = "998";
+    public static final String ERROR_CODE = "999";
+
+    static {
+        CODE_DESC.put(SUCCESS_CODE, "请求成功");
+        CODE_DESC.put(FAIL_CODE, "请求错误");
+        CODE_DESC.put(ERROR_CODE, "系统发生错误");
+    }
+
+    public static String getDesc(String code) {
+        return CODE_DESC.get(code);
+    }
+
+
+
+}

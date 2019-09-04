@@ -48,7 +48,7 @@ export function fnPageHeaderConfig(): PageHeaderConfig {
   };
 }
 
-import { DelonAuthConfig } from '@delon/auth';
+import { DelonAuthConfig, SessionStorageStore, DA_STORE_TOKEN } from '@delon/auth';
 export function fnDelonAuthConfig(): DelonAuthConfig {
   return {
     ...new DelonAuthConfig(),
@@ -85,7 +85,11 @@ export class DelonModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: DelonModule,
-      providers: [...REUSETAB_PROVIDES, ...GLOBAL_CONFIG_PROVIDES],
+      providers: [
+        ...REUSETAB_PROVIDES,
+        ...GLOBAL_CONFIG_PROVIDES,
+        { provide: DA_STORE_TOKEN, useClass: SessionStorageStore },
+      ],
     };
   }
 }

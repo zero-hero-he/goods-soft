@@ -1,6 +1,10 @@
 
 # H2 Web Console (H2ConsoleProperties)
 spring:
+  jpa:
+    hibernate:
+      # possible values: validate | update | create | create-drop
+      ddl-auto: create-drop
   h2:
     console:
       enabled: true # Whether to enable the console.
@@ -26,7 +30,7 @@ spring:
     username: zero
     password: zero
     # 初始化数据库
-    schema: file:./db/schema.ddl
+#    schema: file:./db/schema.ddl
     # 数据文件
     data: file:./db/data.ddl
     # 初始化数据库，第一次启动请使用 always，初始化后请修改为 never
@@ -51,3 +55,6 @@ jwt:
     authentication:
       path: /auth
       refresh: /refresh
+server:
+  servlet:
+    context-path: /goods

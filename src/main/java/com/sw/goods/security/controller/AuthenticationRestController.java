@@ -1,10 +1,12 @@
 package com.sw.goods.security.controller;
 
+import com.sw.goods.constent.Result;
 import com.sw.goods.security.jwt.JwtAuthenticationRequest;
 import com.sw.goods.security.jwt.JwtTokenUtil;
 import com.sw.goods.security.jwt.JwtUser;
 import com.sw.goods.security.exception.AuthenticationException;
 import com.sw.goods.security.service.JwtAuthenticationResponse;
+import com.sw.goods.vo.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,8 +39,8 @@ public class AuthenticationRestController {
     @Qualifier("jwtUserDetailsService")
     private UserDetailsService userDetailsService;
 
-    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
+    @PostMapping(value = "${jwt.route.authentication.path}")
+    public ResponseEntity<HttpResult<?>> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -47,11 +49,11 @@ public class AuthenticationRestController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         // Return the token
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token));
+        return ResponseEntity.ok(new HttpResult<>(new JwtAuthenticationResponse(token)));
     }
 
-    @RequestMapping(value = "${jwt.route.authentication.refresh}", method = RequestMethod.GET)
-    public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+    @GetMapping(value = "${jwt.route.authentication.refresh}")
+    public ResponseEntity<HttpResult<?>> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
@@ -59,15 +61,15 @@ public class AuthenticationRestController {
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(new HttpResult<>(new JwtAuthenticationResponse(refreshedToken)));
         } else {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(new HttpResult<>(Result.FAIL_CODE));
         }
     }
 
     @ExceptionHandler({AuthenticationException.class})
-    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    public ResponseEntity<HttpResult<String>> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HttpResult<>(e.getMessage()));
     }
 
     /**

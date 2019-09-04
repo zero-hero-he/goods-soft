@@ -2,6 +2,7 @@ package com.sw.goods.security.controller;
 
 import com.sw.goods.security.jwt.JwtTokenUtil;
 import com.sw.goods.security.jwt.JwtUser;
+import com.sw.goods.vo.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +27,11 @@ public class UserRestController {
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "user", method = RequestMethod.GET)
-    public JwtUser getAuthenticatedUser(HttpServletRequest request) {
+    public HttpResult<JwtUser> getAuthenticatedUser(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader).substring(7);
         String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
-        return user;
+        return new HttpResult<>(user);
     }
 
 }
