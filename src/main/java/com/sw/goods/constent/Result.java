@@ -16,10 +16,24 @@ public class Result {
     public static final String FAIL_CODE = "998";
     public static final String ERROR_CODE = "999";
 
+    /**
+     * 认证、注册
+     */
+    public static final String LOGIN_FAIL = "900";
+    public static final String REGISTER_FAIL = "901";
+
+
+    public static final String FEILD_ERROR = "800";
+
     static {
         CODE_DESC.put(SUCCESS_CODE, "请求成功");
         CODE_DESC.put(FAIL_CODE, "请求错误");
         CODE_DESC.put(ERROR_CODE, "系统发生错误");
+
+        CODE_DESC.put(LOGIN_FAIL, "登入失败");
+        CODE_DESC.put(REGISTER_FAIL, "注册失败");
+
+        CODE_DESC.put(FEILD_ERROR, "字段错误");
     }
 
     public static String getDesc(String code) {

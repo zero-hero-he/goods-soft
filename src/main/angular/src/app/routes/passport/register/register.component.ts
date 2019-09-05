@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 
 @Component({
@@ -10,21 +10,41 @@ import { _HttpClient } from '@delon/theme';
   styleUrls: ['./register.component.less'],
 })
 export class UserRegisterComponent implements OnDestroy {
-
-  constructor(fb: FormBuilder, private router: Router, public http: _HttpClient, public msg: NzMessageService) {
+  constructor(
+    fb: FormBuilder,
+    private router: Router,
+    public http: _HttpClient,
+    public msg: NzMessageService,
+    private injector: Injector,
+  ) {
     this.form = fb.group({
-      mail: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required, Validators.minLength(6), UserRegisterComponent.checkPassword.bind(this)]],
+      username: [null, [Validators.required, Validators.minLength(4), Validators.maxLength(16)]],
+      firstName: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      lastName: [null, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+      email: [null, [Validators.required, Validators.email]],
+      password: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
+          UserRegisterComponent.checkPassword.bind(this),
+        ],
+      ],
       confirm: [null, [Validators.required, Validators.minLength(6), UserRegisterComponent.passwordEquar]],
-      mobilePrefix: ['+86'],
-      mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
-      captcha: [null, [Validators.required]],
+      // mobilePrefix: ['+86'],
+      // mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
+      // captcha: [null, [Validators.required]],
     });
+  }
+
+  private get notification(): NzNotificationService {
+    return this.injector.get(NzNotificationService);
   }
 
   // #region fields
 
-  get mail() {
+  get email() {
     return this.form.controls.mail;
   }
   get password() {
@@ -33,12 +53,23 @@ export class UserRegisterComponent implements OnDestroy {
   get confirm() {
     return this.form.controls.confirm;
   }
-  get mobile() {
-    return this.form.controls.mobile;
+  get username() {
+    return this.form.controls.username;
   }
-  get captcha() {
-    return this.form.controls.captcha;
+
+  get firstName() {
+    return this.form.controls.firstName;
   }
+
+  get lastName() {
+    return this.form.controls.lastName;
+  }
+  // get mobile() {
+  //   return this.form.controls.mobile;
+  // }
+  // get captcha() {
+  //   return this.form.controls.captcha;
+  // }
   form: FormGroup;
   error = '';
   type = 0;
@@ -85,18 +116,18 @@ export class UserRegisterComponent implements OnDestroy {
     return null;
   }
 
-  getCaptcha() {
-    if (this.mobile.invalid) {
-      this.mobile.markAsDirty({ onlySelf: true });
-      this.mobile.updateValueAndValidity({ onlySelf: true });
-      return;
-    }
-    this.count = 59;
-    this.interval$ = setInterval(() => {
-      this.count -= 1;
-      if (this.count <= 0) clearInterval(this.interval$);
-    }, 1000);
-  }
+  // getCaptcha() {
+  //   if (this.mobile.invalid) {
+  //     this.mobile.markAsDirty({ onlySelf: true });
+  //     this.mobile.updateValueAndValidity({ onlySelf: true });
+  //     return;
+  //   }
+  //   this.count = 59;
+  //   this.interval$ = setInterval(() => {
+  //     this.count -= 1;
+  //     if (this.count <= 0) clearInterval(this.interval$);
+  //   }, 1000);
+  // }
 
   // #endregion
 
@@ -106,14 +137,22 @@ export class UserRegisterComponent implements OnDestroy {
       this.form.controls[key].markAsDirty();
       this.form.controls[key].updateValueAndValidity();
     });
+    console.log(this.form);
     if (this.form.invalid) {
+      console.log('data');
       return;
     }
 
     const data = this.form.value;
-    this.http.post('/register', data).subscribe(() => {
+    console.log(data);
+    this.http.post('/auth/register?_allow_anonymous=true', data).subscribe((res: any) => {
+      console.log(data);
+      if (res.resultCode !== '000') {
+        this.error = res.resultMsg;
+        return;
+      }
       this.router.navigateByUrl('/passport/register-result', {
-        queryParams: { email: data.mail },
+        queryParams: { username: data.username },
       });
     });
   }

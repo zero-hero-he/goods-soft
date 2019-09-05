@@ -7,9 +7,9 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './register-result.component.html',
 })
 export class UserRegisterResultComponent {
-  params = { email: '' };
-  email = '';
+  params = { username: '' };
+  username = '';
   constructor(route: ActivatedRoute, public msg: NzMessageService) {
-    this.params.email = this.email = route.snapshot.queryParams.email || 'ng-alain@example.com';
+    this.params.username = this.username = route.snapshot.queryParams.username || 'songwen';
   }
 }

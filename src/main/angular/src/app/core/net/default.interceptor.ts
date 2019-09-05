@@ -65,6 +65,7 @@ export class DefaultInterceptor implements HttpInterceptor {
     }
     this.checkStatus(ev);
     // 业务处理：一些通用操作
+    console.log(ev);
     switch (ev.status) {
       case 200:
         // 业务层级错误处理，以下是假定restful有一套统一输出格式（指不管成功与否都有相应的数据格式）情况下进行处理
@@ -74,13 +75,10 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 则以下代码片断可直接适用
         if (ev instanceof HttpResponse) {
           const body: any = ev.body;
-          console.log(body);
           if (body && body.resultCode !== '000') {
             this.notification.error(body.resultMsg, ``);
-            return throwError({});
-          } else {
-            return of(ev);
           }
+          return of(ev);
           // if (body && body.status !== 0) {
           //     this.msg.error(body.msg);
           //     // 继续抛出错误中断后续所有 Pipe、subscribe 操作，因此：

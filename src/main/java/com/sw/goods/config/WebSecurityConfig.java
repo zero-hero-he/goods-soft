@@ -2,7 +2,7 @@ package com.sw.goods.config;
 
 import com.sw.goods.security.jwt.JwtAuthenticationEntryPoint;
 import com.sw.goods.security.jwt.JwtAuthorizationTokenFilter;
-import com.sw.goods.security.service.JwtUserDetailsService;
+import com.sw.goods.security.service.JwtUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+    private JwtUserDetailsServiceImpl jwtUserDetailsService;
 
     // Custom JWT based security filter
     @Autowired

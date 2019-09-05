@@ -5,6 +5,7 @@ spring:
     hibernate:
       # possible values: validate | update | create | create-drop
       ddl-auto: create-drop
+    show-sql: true
   h2:
     console:
       enabled: true # Whether to enable the console.

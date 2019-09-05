@@ -1,7 +1,7 @@
 package com.sw.goods.security.service;
 
-import com.sw.goods.security.jwt.JwtUserFactory;
 import com.sw.goods.security.entity.User;
+import com.sw.goods.security.jwt.JwtUserFactory;
 import com.sw.goods.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service("jwtUserDetailsService")
-public class JwtUserDetailsService implements UserDetailsService {
+public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;

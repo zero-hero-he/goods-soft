@@ -4,7 +4,7 @@ import com.sw.goods.constent.Result;
 import com.sw.goods.security.jwt.JwtAuthenticationRequest;
 import com.sw.goods.security.jwt.JwtTokenUtil;
 import com.sw.goods.security.jwt.JwtUser;
-import com.sw.goods.security.exception.AuthenticationException;
+import com.sw.goods.exception.AuthenticationException;
 import com.sw.goods.security.service.JwtAuthenticationResponse;
 import com.sw.goods.vo.HttpResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +67,6 @@ public class AuthenticationRestController {
         }
     }
 
-    @ExceptionHandler({AuthenticationException.class})
-    public ResponseEntity<HttpResult<String>> handleAuthenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HttpResult<>(e.getMessage()));
-    }
 
     /**
      * Authenticates the user. If something is wrong, an {@link AuthenticationException} will be thrown

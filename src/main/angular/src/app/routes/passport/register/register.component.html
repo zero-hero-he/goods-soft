@@ -2,9 +2,45 @@
 <form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
   <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
   <nz-form-item>
+    <nz-form-control [nzErrorTip]="usernameErrorTip">
+      <nz-input-group nzSize="large" nzAddonBeforeIcon="user">
+        <input nz-input formControlName="username" placeholder="用户名" />
+      </nz-input-group>
+      <ng-template #usernameErrorTip let-i>
+        <ng-container *ngIf="i.errors?.required">请输入用户名！</ng-container>
+        <ng-container *ngIf="i.errors?.minlength">用户名错误，用户名长度4到10位！</ng-container>
+        <ng-container *ngIf="i.errors?.maxlength">用户名错误，用户名长度4到10位！</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="firstNameErrorTip">
+      <nz-input-group nzSize="large" nzAddonBeforeIcon="user">
+        <input nz-input formControlName="firstName" placeholder="姓" />
+      </nz-input-group>
+      <ng-template #firstNameErrorTip let-i>
+        <ng-container *ngIf="i.errors?.required">请输入姓氏！</ng-container>
+        <ng-container *ngIf="i.errors?.minlength">姓氏错误错误，姓氏长度过短！</ng-container>
+        <ng-container *ngIf="i.errors?.maxlength">姓氏错误错误，姓氏长度过长！</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="lastNameErrorTip">
+      <nz-input-group nzSize="large" nzAddonBeforeIcon="user">
+        <input nz-input formControlName="lastName" placeholder="名" />
+      </nz-input-group>
+      <ng-template #lastNameErrorTip let-i>
+        <ng-container *ngIf="i.errors?.required">请输入名字！</ng-container>
+        <ng-container *ngIf="i.errors?.minlength">名字错误，名字长度过短！</ng-container>
+        <ng-container *ngIf="i.errors?.maxlength">名字错误，名字长度过长！</ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
     <nz-form-control [nzErrorTip]="mailErrorTip">
       <nz-input-group nzSize="large" nzAddonBeforeIcon="user">
-        <input nz-input formControlName="mail" placeholder="Email" />
+        <input nz-input formControlName="email" placeholder="邮箱" />
       </nz-input-group>
       <ng-template #mailErrorTip let-i>
         <ng-container *ngIf="i.errors?.required">请输入邮箱地址！</ng-container>
@@ -14,15 +50,10 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-control [nzErrorTip]="'请输入密码！'">
-      <nz-popover
-        [nzPlacement]="'right'"
-        [nzTrigger]="'focus'"
-        [(nzVisible)]="visible"
-        nzOverlayClassName="register-password-cdk"
-        [nzOverlayStyle]="{ 'width.px': 240 }"
-      >
+      <nz-popover [nzPlacement]="'right'" [nzTrigger]="'focus'" [(nzVisible)]="visible"
+        nzOverlayClassName="register-password-cdk" [nzOverlayStyle]="{ 'width.px': 240 }">
         <nz-input-group nzSize="large" nz-popover nzAddonBeforeIcon="lock">
-          <input nz-input type="password" formControlName="password" placeholder="Password" />
+          <input nz-input type="password" formControlName="password" placeholder="密码" />
         </nz-input-group>
         <ng-template #nzTemplate>
           <div style="padding: 4px 0;">
@@ -32,12 +63,8 @@
               <div *ngSwitchDefault class="error">强度：太短</div>
             </ng-container>
             <div class="progress-{{ status }}">
-              <nz-progress
-                [nzPercent]="progress"
-                [nzStatus]="passwordProgressMap[status]"
-                [nzStrokeWidth]="6"
-                [nzShowInfo]="false"
-              ></nz-progress>
+              <nz-progress [nzPercent]="progress" [nzStatus]="passwordProgressMap[status]" [nzStrokeWidth]="6"
+                [nzShowInfo]="false"></nz-progress>
             </div>
             <p class="mt-sm">请至少输入 6 个字符。请不要使用容易被猜到的密码。</p>
           </div>
@@ -48,7 +75,7 @@
   <nz-form-item>
     <nz-form-control [nzErrorTip]="confirmErrorTip">
       <nz-input-group nzSize="large" nzAddonBeforeIcon="lock">
-        <input nz-input type="password" formControlName="confirm" placeholder="Confirm Password" />
+        <input nz-input type="password" formControlName="confirm" placeholder="确认密码" />
       </nz-input-group>
       <ng-template #confirmErrorTip let-i>
         <ng-container *ngIf="i.errors?.required">请确认密码！</ng-container>
@@ -56,7 +83,7 @@
       </ng-template>
     </nz-form-control>
   </nz-form-item>
-  <nz-form-item>
+  <!-- <nz-form-item>
     <nz-form-control [nzErrorTip]="mobileErrorTip">
       <nz-input-group nzSize="large" [nzAddOnBefore]="addOnBeforeTemplate">
         <ng-template #addOnBeforeTemplate>
@@ -96,7 +123,7 @@
         </nz-col>
       </nz-row>
     </nz-form-control>
-  </nz-form-item>
+  </nz-form-item> -->
   <nz-form-item>
     <button nz-button nzType="primary" nzSize="large" type="submit" [nzLoading]="http.loading" class="submit">
       注册
