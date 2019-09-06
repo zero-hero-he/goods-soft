@@ -33,7 +33,7 @@ spring:
     # 初始化数据库
 #    schema: file:./db/schema.ddl
     # 数据文件
-    data: file:./db/data.ddl
+    data: file:./db/data.ddl,file:./db/province.sql,file:./db/city.sql,file:./db/country.sql
     # 初始化数据库，第一次启动请使用 always，初始化后请修改为 never
     initialization-mode: always
 
