@@ -42,34 +42,31 @@ public class Brand {
     private Integer cityId;
 
     @Column(name = "COUNTRY_ID", length = 12)
-    @NotNull
     private String countryId;
 
     @Column(name = "TOWN_ID", length = 12)
-    @NotNull
     private String townId;
 
     @Column(name = "VILLAGE_ID", length = 12)
-    @NotNull
     private String villageId;
 
     @Column(name = "ADDRESS", length = 512)
     private String address;
 
     @Transient
-    private String province;
+    private String provinceName;
 
     @Transient
-    private String city;
+    private String cityName;
 
     @Transient
-    private String country;
+    private String countryName;
 
     @Transient
-    private String town;
+    private String townName;
 
     @Transient
-    private String village;
+    private String villageName;
 
 
 }
