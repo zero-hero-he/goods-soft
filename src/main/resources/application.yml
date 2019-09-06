@@ -26,7 +26,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     # AUTO_SERVER=true 启动自动混合模式，允许开启多个连接，该参数不支持在内存中运行模式
     # DB_CLOSE_ON_EXIT 当虚拟机退出时并不关闭数据库
-    url: jdbc:h2:file:./h2/test;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=TRUE;IFEXISTS=false
+    url: jdbc:h2:file:./h2/test;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=TRUE;IFEXISTS=false;mode=MySQL
     driver-class-name: org.h2.Driver
     username: zero
     password: zero

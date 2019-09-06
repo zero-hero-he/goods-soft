@@ -34,4 +34,6 @@ public class UserInfo {
 
     @Email(message = "邮箱的格式不正确")
     private String email;
+
+    private String avatar;
 }

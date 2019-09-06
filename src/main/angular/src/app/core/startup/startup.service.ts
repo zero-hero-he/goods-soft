@@ -31,7 +31,7 @@ export class StartupService {
   }
 
   private viaHttp(resolve: any, reject: any) {
-    zip(this.httpClient.get('assets/tmp/app-data.json'))
+    zip(this.httpClient.get('/user'))
       .pipe(
         catchError(([appData]) => {
           resolve(null);
@@ -43,15 +43,18 @@ export class StartupService {
           // Application data
           const res: any = appData;
           // Application information: including site name, description, year
-          this.settingService.setApp(res.app);
+          const app: any = {
+            name: `Mango商品信息管理系统`,
+            description: `商品信息管理、销售、跟踪、统计系统`,
+          };
+          this.settingService.setApp(app);
           // User information: including name, avatar, email address
-          this.settingService.setUser(res.user);
+          this.settingService.setUser(res.data);
           // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
           this.aclService.setFull(true);
-          // Menu data, https://ng-alain.com/theme/menu
-          this.menuService.add(res.menu);
+          this.getMenu();
           // Can be set page suffix title, https://ng-alain.com/theme/title
-          this.titleService.suffix = res.app.name;
+          this.titleService.suffix = app.name;
         },
         () => {},
         () => {
@@ -114,9 +117,16 @@ export class StartupService {
     // https://github.com/angular/angular/issues/15088
     return new Promise((resolve, reject) => {
       // http
-      // this.viaHttp(resolve, reject);
+      this.viaHttp(resolve, reject);
       // mock：请勿在生产环境中这么使用，viaMock 单纯只是为了模拟一些数据使脚手架一开始能正常运行
-      this.viaMock(resolve, reject);
+      // this.viaMock(resolve, reject);
+    });
+  }
+
+  private getMenu(): any {
+    this.httpClient.get('assets/tmp/app-data.json').subscribe((data: any) => {
+      // Menu data, https://ng-alain.com/theme/menu
+      this.menuService.add(data.menu);
     });
   }
 }

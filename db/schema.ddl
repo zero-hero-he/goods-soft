@@ -1,4 +1,5 @@
 set collation ICU4J_CHINESE_CHINA;
+set mode MySQL;
 
 -- initialize tables
 -- DROP TABLE IF EXISTS `user_authority`;

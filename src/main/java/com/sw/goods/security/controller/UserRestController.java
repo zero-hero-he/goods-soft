@@ -48,18 +48,17 @@ public class UserRestController {
 
     @PostMapping("/auth/register")
     public HttpResult<String> register(@RequestBody UserInfo userInfo) throws SoftException, SQLException {
-        log.info("=============");
         if (userService.queryByUsername(userInfo.getUsername()) != null) {
             throw new SoftException(Result.REGISTER_FAIL, "该用户名已存在!");
         }
         User user = new User();
         user.setUsername(userInfo.getUsername());
-        user.setFirstname(userInfo.getFirstName());
-        user.setLastname(userInfo.getLastName());
+        user.setFirstName(userInfo.getFirstName());
+        user.setLastName(userInfo.getLastName());
         user.setEmail(userInfo.getEmail());
         user.setPassword(userInfo.getPassword());
         if (userService.addUser(user) == 1) {
-            return new HttpResult<>("注册成功!");
+            return new HttpResult<>(Result.SUCCESS_CODE, "注册成功!");
         } else {
             throw new SoftException(Result.REGISTER_FAIL, "注册失败!");
         }
