@@ -4,13 +4,7 @@ import { Component, HostBinding, Input, ElementRef, AfterViewInit, ChangeDetecti
   selector: 'header-search',
   template: `
     <nz-input-group [nzAddOnBeforeIcon]="focus ? 'arrow-down' : 'search'">
-      <input
-        nz-input
-        [(ngModel)]="q"
-        (focus)="qFocus()"
-        (blur)="qBlur()"
-        [placeholder]="'搜索：员工、文件、照片等'"
-      />
+      <input #searchtInput nz-input (keyup.enter)="search(searchtInput.value)" [(ngModel)]="q" (focus)="qFocus()" (blur)="qBlur()" [placeholder]="'搜索：商品、厂商、渠道等'" />
     </nz-input-group>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,5 +41,9 @@ export class HeaderSearchComponent implements AfterViewInit {
   qBlur() {
     this.focus = false;
     this.searchToggled = false;
+  }
+
+  search(value: string) {
+      console.log("search", value);
   }
 }
