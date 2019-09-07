@@ -12,36 +12,35 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * 厂商信息表
- *
+ * 渠道
  * @author songwen
  * gmail: zero.hero.he@gmail.com
- * Created on 2019/9/6
+ * Created on 2019/9/7
  */
 @Entity
-@Table(name = "BRAND")
+@Table(name = "CHANNEL")
 @Setter
 @Getter
-public class Brand extends BaseInfo implements Serializable {
+public class Channel extends BaseInfo implements Serializable {
+    private static final long serialVersionUID = -2945611784305546660L;
 
-    private static final long serialVersionUID = 7690124185128387480L;
     @Column(name = "NAME", length = 64)
     @NotNull
-    @NotBlank(message = "品牌简称不能为空")
-    @Length(min = 1, max = 64, message = "品牌简称为1~64")
+    @NotBlank(message = "渠道简称不能为空")
+    @Length(min = 1, max = 64, message = "渠道简称为1~64")
     private String name;
 
     @Column(name = "FULL_NAME", length = 254)
     @NotNull
-    @NotBlank(message = "品牌全称不能为空")
-    @Length(min = 1, max = 254, message = "品牌全称为1~254")
+    @NotBlank(message = "渠道全称不能为空")
+    @Length(min = 1, max = 254, message = "渠道全称为1~254")
     private String fullName;
 
     @Column(name = "CONTACT", length = 20)
     @Length(max = 20, message = "联系电话的最大长度为20")
     private String contact;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.LAZY)
     @NotFound(action= NotFoundAction.IGNORE)
     @JoinColumn(name = "PROVINCE_ID", referencedColumnName = "PROVINCE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Province province;
@@ -73,6 +72,4 @@ public class Brand extends BaseInfo implements Serializable {
     @Column(name = "NOTE", length = 512)
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
-
-
 }
