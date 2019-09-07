@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,8 +14,9 @@ import java.util.List;
  */
 @Setter
 @Getter
-public class PageResult<T> {
+public class PageResult<T> implements Serializable {
 
+    private static final long serialVersionUID = 5424134084935663800L;
     private List<T> data;
 
     private Integer totalPages;

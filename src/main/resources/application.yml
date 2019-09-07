@@ -1,6 +1,8 @@
-
 # H2 Web Console (H2ConsoleProperties)
 spring:
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
   jpa:
     hibernate:
       # possible values: validate | update | create | create-drop
