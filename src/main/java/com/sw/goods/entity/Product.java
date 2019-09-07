@@ -48,7 +48,7 @@ public class Product extends BaseInfo implements Serializable {
     private Brand brand;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "IMAGE_ID")
     private List<Image> images;
 
 

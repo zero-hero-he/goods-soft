@@ -30,7 +30,7 @@ public class Image extends BaseInfo implements Serializable {
     private String imageUrl;
 
 
-    @Column(name = "NAME", length = 70)
+    @Column(name = "NOTE", length = 70)
     @Length(max = 70, message = "说明的最大长度70")
     private String note;
 

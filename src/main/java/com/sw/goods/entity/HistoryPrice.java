@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 价格表
+ * 历史价格表
  * @author songwen
  * gmail: zero.hero.he@gmail.com
  * Created on 2019/9/7

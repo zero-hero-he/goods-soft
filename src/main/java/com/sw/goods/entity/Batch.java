@@ -30,7 +30,7 @@ public class Batch extends BaseInfo implements Serializable {
     @Length(min = 1, max = 30, message = "批次号长度为1~30")
     private String batchId;
 
-    @Column(name = "name", length = 64)
+    @Column(name = "NAME", length = 64)
     @Length(min = 1, max = 64, message = "批次名称长度为1~64")
     private String name;
 

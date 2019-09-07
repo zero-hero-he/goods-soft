@@ -75,6 +75,6 @@ public class Channel extends BaseInfo implements Serializable {
     private String note;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+    @JoinColumn(name = "IMAGE_ID")
     private List<Image> images;
 }
