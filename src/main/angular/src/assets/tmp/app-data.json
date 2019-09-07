@@ -49,6 +49,56 @@
           "badge": 2
         }
       ]
+    },
+    {
+      "text": "管理导航",
+      "i18n": "管理导航",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "品牌管理",
+          "i18n": "品牌管理",
+          "link": "/brand",
+          "icon": "anticon-appstore"
+        },
+        {
+          "text": "渠道管理",
+          "i18n": "渠道管理",
+          "link": "/channel",
+          "icon": "anticon-contacts"
+        },
+        {
+          "text": "批次管理",
+          "i18n": "批次管理",
+          "link": "/batch",
+          "icon": "anticon-ordered-list"
+        },
+        {
+          "text": "产品管理",
+          "i18n": "产品管理",
+          "link": "/product",
+          "icon": "anticon-project"
+        }
+        ,
+        {
+          "text": "价格管理",
+          "i18n": "价格管理",
+          "icon": "anticon-line-chart",
+          "children": [
+            {
+              "text": "现行价格",
+              "link": "/price",
+              "i18n": "现行价格"
+            },
+            {
+              "text": "历史价格",
+              "link": "/history-price",
+              "i18n": "历史价格"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
