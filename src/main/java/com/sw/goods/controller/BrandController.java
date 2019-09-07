@@ -5,9 +5,7 @@ import com.sw.goods.service.BrandService;
 import com.sw.goods.vo.HttpResult;
 import com.sw.goods.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author songwen
@@ -25,6 +23,21 @@ public class BrandController {
     @GetMapping("/get/name")
     public HttpResult<PageResult<Brand>> getByName(String name, int pageNumber, int pageSize) {
         return new HttpResult<>(new PageResult<>(brandService.getByName(name, pageNumber, pageSize)));
+    }
+
+    @GetMapping("/get/{id}")
+    public HttpResult<Brand> get(@PathVariable Long id) {
+        return new HttpResult<>(brandService.getById(id));
+    }
+
+    @PostMapping("/add")
+    public HttpResult<Brand> add(@RequestBody Brand brand) {
+        return new HttpResult<>(brandService.add(brand));
+    }
+
+    @PostMapping("/update")
+    public HttpResult<Brand> update(@RequestBody Brand brand) {
+        return new HttpResult<>(brandService.update(brand));
     }
 
 }

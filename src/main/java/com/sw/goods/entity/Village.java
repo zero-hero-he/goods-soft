@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * @author songwen
@@ -15,8 +16,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "VILLAGE")
 @Setter
 @Getter
-public class Village {
+public class Village implements Serializable {
 
+    private static final long serialVersionUID = -9144796568527023025L;
     @Id
     @Column(name = "_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

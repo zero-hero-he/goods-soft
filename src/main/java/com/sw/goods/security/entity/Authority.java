@@ -5,12 +5,14 @@ import com.sw.goods.security.entity.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "AUTHORITY")
-public class Authority {
+public class Authority implements Serializable {
 
+    private static final long serialVersionUID = 7876840718481214608L;
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

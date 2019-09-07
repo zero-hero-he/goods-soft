@@ -1,6 +1,8 @@
 package com.sw.goods.service.impl;
 
+import com.sw.goods.constent.Result;
 import com.sw.goods.entity.Brand;
+import com.sw.goods.exception.SoftException;
 import com.sw.goods.repository.BrandRepository;
 import com.sw.goods.service.BrandService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +28,31 @@ public class BrandServiceImpl implements BrandService {
     public Page<Brand> getByName(String name, int pageNumber, int pageSize) {
         Pageable pageable = new PageRequest(pageNumber,pageSize);
         return brandRepository.findByName(name, pageable);
+    }
+
+    @Override
+    public Brand getById(long id) {
+        return brandRepository.getOne(id);
+    }
+
+    @Override
+    public Brand add(Brand brand) {
+        return brandRepository.save(brand);
+    }
+
+    @Override
+    public Brand update(Brand brand) throws SoftException {
+        if (brandRepository.getOne(brand.getId()) == null) {
+            throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
+        }
+        return brandRepository.save(brand);
+    }
+
+    @Override
+    public void delete(Brand brand) throws SoftException {
+        if (brandRepository.getOne(brand.getId()) == null) {
+            throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
+        }
+        brandRepository.deleteById(brand.getId());
     }
 }

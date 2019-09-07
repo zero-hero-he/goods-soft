@@ -25,6 +25,12 @@ public class Result {
 
     public static final String FEILD_ERROR = "800";
 
+
+    public static final String ADD_FAIL = "700";
+    public static final String UPDATE_FAIL = "701";
+    public static final String DELETE_FAIL = "702";
+    public static final String GET_FAIL = "703";
+
     static {
         CODE_DESC.put(SUCCESS_CODE, "请求成功");
         CODE_DESC.put(FAIL_CODE, "请求错误");
@@ -34,6 +40,11 @@ public class Result {
         CODE_DESC.put(REGISTER_FAIL, "注册失败");
 
         CODE_DESC.put(FEILD_ERROR, "字段错误");
+
+        CODE_DESC.put(ADD_FAIL, "添加失败");
+        CODE_DESC.put(UPDATE_FAIL, "更新失败");
+        CODE_DESC.put(DELETE_FAIL, "删除失败");
+        CODE_DESC.put(GET_FAIL, "获取失败");
     }
 
     public static String getDesc(String code) {

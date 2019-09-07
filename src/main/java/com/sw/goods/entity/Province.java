@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * 省份
@@ -17,9 +18,10 @@ import javax.validation.constraints.NotNull;
 @Table(name = "PROVINCE")
 @Setter
 @Getter
-public class Province {
+public class Province implements Serializable {
 
 
+    private static final long serialVersionUID = -7638395985023768851L;
     @Id
     @Column(name = "_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

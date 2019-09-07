@@ -31,7 +31,7 @@ public class ExceptionhandlerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public HttpResult<?> exception(HttpServletRequest request, Exception exception) {
-        log.error("raised exception : " + exception);
+        log.error("raised exception : ", exception);
         return new HttpResult<>(Result.ERROR_CODE, exception.getMessage());
     }
 
@@ -50,7 +50,7 @@ public class ExceptionhandlerController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public HttpResult<?> validationError(MethodArgumentNotValidException ex) {
-        log.error("raised MethodArgumentNotValidException : " + ex);
+        log.error("raised MethodArgumentNotValidException : ", ex);
         BindingResult result = ex.getBindingResult();
         final List<FieldError> fieldErrors = result.getFieldErrors();
         StringBuilder builder = new StringBuilder();

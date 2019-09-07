@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,9 @@ import java.util.List;
 @Table(name = "USER")
 @Setter
 @Getter
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = 319489587323577072L;
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
