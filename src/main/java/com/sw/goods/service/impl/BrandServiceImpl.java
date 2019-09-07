@@ -49,10 +49,10 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void delete(Brand brand) throws SoftException {
-        if (brandRepository.getOne(brand.getId()) == null) {
+    public void delete(Long id) throws SoftException {
+        if (brandRepository.getOne(id) == null) {
             throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
         }
-        brandRepository.deleteById(brand.getId());
+        brandRepository.deleteById(id);
     }
 }

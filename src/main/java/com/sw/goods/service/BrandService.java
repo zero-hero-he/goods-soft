@@ -19,5 +19,5 @@ public interface BrandService {
 
     Brand update(Brand brand) throws SoftException;
 
-    void delete(Brand brand) throws SoftException;
+    void delete(Long id) throws SoftException;
 }
