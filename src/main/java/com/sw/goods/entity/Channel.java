@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 渠道
@@ -72,4 +73,8 @@ public class Channel extends BaseInfo implements Serializable {
     @Column(name = "NOTE", length = 512)
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id")
+    private List<Image> images;
 }
