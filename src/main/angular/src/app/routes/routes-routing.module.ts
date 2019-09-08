@@ -29,9 +29,8 @@ const routes: Routes = [
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // 业务子模块
       // { path: 'widgets', loadChildren: () => import('./widgets/widgets.module').then(m => m.WidgetsModule) },
-      { path: 'brand', loadChildren: () => import('./brand/brand.module').then(m => m.BrandModule) },
       // { path: 'brand', loadChildren: './brand/brand.module#BrandModule' },
-      { path: 'channel', loadChildren: () => import('./channel/channel.module').then(m => m.ChannelModule) },
+      { path: 'pro', loadChildren: () => import('./pro/pro.module').then(m => m.ProModule) },
     ],
   },
   // 全屏布局

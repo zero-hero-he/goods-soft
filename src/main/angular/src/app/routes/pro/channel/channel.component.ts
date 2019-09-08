@@ -4,10 +4,10 @@ import { STColumn, STComponent } from '@delon/abc';
 import { SFSchema } from '@delon/form';
 
 @Component({
-  selector: 'app-channel-list',
-  templateUrl: './list.component.html',
+  selector: 'app-pro-channel',
+  templateUrl: './channel.component.html',
 })
-export class ChannelListComponent implements OnInit {
+export class ProChannelComponent implements OnInit {
   url = `/user`;
   searchSchema: SFSchema = {
     properties: {

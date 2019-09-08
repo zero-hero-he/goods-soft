@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author songwen
  * gmail: zero.hero.he@gmail.com
@@ -42,7 +44,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand update(Brand brand) throws SoftException {
-        if (brandRepository.getOne(brand.getId()) == null) {
+        if (brandRepository.existsById(brand.getId())) {
             throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
         }
         return brandRepository.save(brand);
@@ -50,9 +52,14 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void delete(Long id) throws SoftException {
-        if (brandRepository.getOne(id) == null) {
+        if (brandRepository.existsById(id)) {
             throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
         }
         brandRepository.deleteById(id);
+    }
+
+    @Override
+    public int delete(List<Long> ids) throws SoftException {
+        return brandRepository.deleteBatch(ids);
     }
 }

@@ -17,18 +17,18 @@ import java.util.List;
 public class PageResult<T> implements Serializable {
 
     private static final long serialVersionUID = 5424134084935663800L;
-    private List<T> data;
+    private List<T> list;
 
     private Integer totalPages;
 
-    private Long totalElements;
+    private Long total;
 
     public PageResult() {
     }
 
     public PageResult(Page<T> page) {
-        this.data = page.getContent();
-        this.totalElements = page.getTotalElements();
+        this.list = page.getContent();
+        this.total = page.getTotalElements();
         this.totalPages = page.getTotalPages();
     }
 

@@ -53,19 +53,20 @@ export class DefaultInterceptor implements HttpInterceptor {
     if ((ev.status >= 200 && ev.status < 300) || ev.status === 401) {
       return;
     }
+    console.log(ev);
 
     const errortext = CODEMESSAGE[ev.status] || ev.statusText;
     this.notification.error(`请求错误 ${ev.status}: ${ev.url}`, errortext);
   }
 
   private handleData(ev: HttpResponseBase): Observable<any> {
+    console.log(ev);
     // 可能会因为 `throw` 导出无法执行 `_HttpClient` 的 `end()` 操作
     if (ev.status > 0) {
       this.injector.get(_HttpClient).end();
     }
     this.checkStatus(ev);
     // 业务处理：一些通用操作
-    console.log(ev);
     switch (ev.status) {
       case 200:
         // 业务层级错误处理，以下是假定restful有一套统一输出格式（指不管成功与否都有相应的数据格式）情况下进行处理
@@ -116,9 +117,11 @@ export class DefaultInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // 统一加上服务端前缀
     let url = req.url;
+    console.log(url);
     if (!url.startsWith('https://') && !url.startsWith('http://') && !url.startsWith('assets')) {
       url = environment.SERVER_URL + url;
     }
+    console.log(url);
 
     const newReq = req.clone({ url });
     return next.handle(newReq).pipe(

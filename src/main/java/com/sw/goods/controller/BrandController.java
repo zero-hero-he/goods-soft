@@ -3,12 +3,14 @@ package com.sw.goods.controller;
 import com.sw.goods.entity.Brand;
 import com.sw.goods.exception.SoftException;
 import com.sw.goods.service.BrandService;
+import com.sw.goods.vo.BaseRequestInfo;
 import com.sw.goods.vo.HttpResult;
 import com.sw.goods.vo.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author songwen
@@ -24,8 +26,8 @@ public class BrandController {
 
 
     @GetMapping("/get/name")
-    public HttpResult<PageResult<Brand>> getByName(String name, int pageNumber, int pageSize) {
-        return new HttpResult<>(new PageResult<>(brandService.getByName(name, pageNumber, pageSize)));
+    public HttpResult<PageResult<Brand>> getByName(String name, BaseRequestInfo baseRequestInfo) {
+        return new HttpResult<>(new PageResult<>(brandService.getByName(name, baseRequestInfo.getPi(), baseRequestInfo.getPs())));
     }
 
     @GetMapping("/get/{id}")
@@ -43,10 +45,15 @@ public class BrandController {
         return new HttpResult<>(brandService.update(brand));
     }
 
-    @DeleteMapping("/delete{id}")
+    @DeleteMapping("/delete/{id}")
     public HttpResult<Integer> delete(@PathVariable @NotNull Long id) throws SoftException {
         brandService.delete(id);
         return new HttpResult<>(1);
+    }
+
+    @DeleteMapping("/delete")
+    public HttpResult<Integer> deletes(@NotNull List<Long> ids) throws SoftException {
+        return new HttpResult<>(brandService.delete(ids));
     }
 
 }

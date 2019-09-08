@@ -4,7 +4,11 @@ import com.sw.goods.entity.Brand;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author songwen
@@ -21,5 +25,10 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
             countQuery = "select count(*) from brand where name like concat('%',:name,'%')",
             nativeQuery = true)
     Page<Brand> findByName(String name, Pageable pageable);
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "delete from brand where id in (?1)", nativeQuery = true)
+    int deleteBatch(List<Long> ids);
 
 }
