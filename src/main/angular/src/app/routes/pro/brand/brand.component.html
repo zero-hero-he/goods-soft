@@ -53,24 +53,12 @@
       </ng-template>
     </nz-alert>
   </div>
-  <!-- <st #st [columns]="columns" [data]="url" [res]="res" [req]="req" [page]="pages" [loading]="loading"
-    (change)="stChange($event)"> -->
-  <!-- <st #st [columns]="columns" [data]="url" [res]="res" [req]="req" [page]="pages" [loading]="http.loading"
-    (change)="stChange($event)">
-
-  </st> -->
-
   <st #st [columns]="columns" [data]="data" [total]="total" [loading]="loading" [page]="pages" (error)="stError($event)"
     (change)="stChange($event)">
+    <ng-template st-row="note" let-i>
+      <span nz-tooltip [nzTooltipTitle]="i.note">{{ i.noteShort }}</span>
+    </ng-template>
   </st>
-
-  <!-- <st #st [data]="url" showSizeChanger ps="2" [req]="req" [res]="res" [columns]="columns"></st> -->
-  <!-- <st #st [data]="url" showSizeChanger [req]="req" [columns]="columns"></st> -->
-
-  <!-- <nz-table #tenantListTable [nzFrontPagination]="false" [nzData]="list" [nzLoading]="loading" 
-    [nzTotal]="pageInfo.total" [(nzPageIndex)]="pageInfo.pageIndex"
-    [(nzPageSize)]="pageInfo.pageSize" (nzPageIndexChange)="load()" (nzPageSizeChange)="load()" [nzShowSizeChanger]="true"> -->
-
 
 </nz-card>
 <ng-template #modalContent>

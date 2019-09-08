@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange, STPage } from '@delon/abc';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'app-pro-brand',
@@ -70,15 +72,8 @@ export class ProBrandComponent implements OnInit {
     {
       title: '备注',
       index: 'note',
-      format: (item: STData, col: STColumn, index: number) => {
-        const note = item.note;
-        if (note !== null && note.length > 20) {
-          const noteTmp = note.substr(20) + '...';
-          return `<span nz-tooltip nzTooltipTitle="${note}">${noteTmp}</span>`;
-        } else {
-          return note;
-        }
-      },
+      render: 'note',
+      width: 10,
     },
     { title: '创建时间', type: 'date', index: 'createTime' },
     { title: '修改时间', type: 'date', index: 'updateTime' },
@@ -93,7 +88,21 @@ export class ProBrandComponent implements OnInit {
       .get('/brand/get/name', this.q)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(res => {
-        this.data = res.data.list;
+        // this.data = res.data.list;
+        this.data = Array(res.data.list.length)
+          .fill({})
+          .map((item: any, idx: number) => {
+            const iData: any = res.data.list[idx];
+            iData.noteShort =
+              iData.note !== null && iData.note.length > 20 ? iData.note.substr(20) + '...' : iData.note;
+            console.log('-------------', iData);
+
+            return iData;
+          });
+        // this.data.forEach(i => {
+        //   i.noteShort = i.note !== null && i.note.length > 20 ? i.note.substr(20) + '...' : i.note;
+        // });
+        console.log(this.data);
         this.total = res.data.total;
         this.cdr.detectChanges();
       });

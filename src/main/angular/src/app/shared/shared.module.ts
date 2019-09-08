@@ -12,9 +12,7 @@ import { DelonChartModule } from '@delon/chart';
 // #region third libs
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-const THIRDMODULES = [NgZorroAntdModule, CountdownModule, NzPopoverModule, NzToolTipModule];
+const THIRDMODULES = [NgZorroAntdModule, CountdownModule];
 // #endregion
 
 // #region your componets & directives
