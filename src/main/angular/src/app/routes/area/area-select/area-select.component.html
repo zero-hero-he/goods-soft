@@ -1,0 +1,13 @@
+<form nz-form class="area-form" [nzLayout]="layout">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="province">省</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="选择省份" [(ngModel)]="provinceValue"
+        (ngModelChange)="provinceChange($event)">
+        <ng-template class="province-item" *ngFor="let province of provinces">
+          <nz-option [nzLabel]="province.name" [nzValue]="province.provinceId"></nz-option>
+        </ng-template>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -3,8 +3,7 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap, map } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange, STPage } from '@delon/abc';
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { AreaSelectComponent } from '../../area/area-select/area-select.component';
 
 @Component({
   selector: 'app-pro-brand',
@@ -12,6 +11,12 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProBrandComponent implements OnInit {
+  constructor(
+    private http: _HttpClient,
+    public msg: NzMessageService,
+    private modalSrv: NzModalService,
+    private cdr: ChangeDetectorRef,
+  ) {}
   q: any = {
     name: '',
   };
@@ -42,6 +47,7 @@ export class ProBrandComponent implements OnInit {
   };
 
   @ViewChild('st', { static: false }) st: STComponent;
+  @ViewChild('area', { static: false }) area: AreaSelectComponent;
 
   columns: STColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
@@ -95,8 +101,6 @@ export class ProBrandComponent implements OnInit {
             const iData: any = res.data.list[idx];
             iData.noteShort =
               iData.note !== null && iData.note.length > 20 ? iData.note.substr(20) + '...' : iData.note;
-            console.log('-------------', iData);
-
             return iData;
           });
         // this.data.forEach(i => {
@@ -148,13 +152,6 @@ export class ProBrandComponent implements OnInit {
     // wait form reset updated finished
     setTimeout(() => this.getData());
   }
-
-  constructor(
-    private http: _HttpClient,
-    public msg: NzMessageService,
-    private modalSrv: NzModalService,
-    private cdr: ChangeDetectorRef,
-  ) {}
 
   ngOnInit() {
     this.getData();

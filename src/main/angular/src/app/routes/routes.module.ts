@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { SharedModule } from '@shared';
 import { RouteRoutingModule } from './routes-routing.module';
@@ -12,6 +12,7 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
+import { AreaSelectComponent } from './area/area-select/area-select.component';
 
 const COMPONENTS = [
   DashboardV1Component,
@@ -30,5 +31,7 @@ const COMPONENTS_NOROUNT = [];
   imports: [SharedModule, RouteRoutingModule],
   declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT],
   entryComponents: COMPONENTS_NOROUNT,
+  // exports: [AreaSelectComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RoutesModule {}
