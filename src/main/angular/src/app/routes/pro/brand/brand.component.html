@@ -61,9 +61,6 @@
   </st>
 
 </nz-card>
-<app-area-select #area [layout]="'inline'">
-
-</app-area-select>
 
 <ng-template #modalContent>
   <nz-form-item>
@@ -85,8 +82,12 @@
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
-    <form nz-form [nzLayout]="'inline'">
-      <nz-form-item>
+
+    <form nz-form>
+      <app-area-select #area>
+
+      </app-area-select>
+      <!-- <nz-form-item>
         <nz-form-label nzFor="province">省</nz-form-label>
         <nz-form-control>
           <input nz-input [(ngModel)]="addData.province" name="province" placeholder="请输入品牌简称" id="province" />
@@ -103,7 +104,7 @@
         <nz-form-control>
           <input nz-input [(ngModel)]="addData.country" name="country" placeholder="请输入品牌简称" id="country" />
         </nz-form-control>
-      </nz-form-item>
+      </nz-form-item> -->
     </form>
   </nz-form-item>
 

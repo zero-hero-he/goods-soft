@@ -1,8 +1,5 @@
-import { Country } from './country';
-import { City } from './city';
 import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { Province } from './province';
 
 @Injectable({
   providedIn: 'root',
@@ -10,47 +7,43 @@ import { Province } from './province';
 export class AreaService {
   constructor(private http: _HttpClient) {}
 
-  getProvinces(): Province[] {
+  getProvinces() {
     const url = '/area/province';
     const params = '';
     return this.get(url, params);
   }
 
-  getProvince(provinceId: any): Province {
+  getProvince(provinceId: any) {
     const url = '/area/province/' + provinceId;
     const params = '';
     return this.get(url, params);
   }
 
-  getCitys(provinceId: any): City[] {
+  getCitys(provinceId: any) {
     const url = '/area/citys/' + provinceId;
     const params = '';
     return this.get(url, params);
   }
 
-  getCity(cityId: any): City {
+  getCity(cityId: any) {
     const url = '/area/city/' + cityId;
     const params = '';
     return this.get(url, params);
   }
 
-  getCountrys(cityId: any): Country[] {
+  getCountrys(cityId: any) {
     const url = '/area/countrys/' + cityId;
     const params = '';
     return this.get(url, params);
   }
 
-  getCountry(countId: any): Country {
+  getCountry(countId: any) {
     const url = '/area/country/' + countId;
     const params = '';
     return this.get(url, params);
   }
 
   get(url: string, params: any) {
-    let data: any;
-    this.http.get(url, params).subscribe(res => {
-      data = res.data;
-    });
-    return data;
+    return this.http.get(url, params);
   }
 }

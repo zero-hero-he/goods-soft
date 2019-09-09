@@ -1,3 +1,5 @@
+import { Country } from './../country';
+import { City } from './../city';
 import { Component, OnInit } from '@angular/core';
 import { Province } from '../province';
 import { AreaService } from '../area.service';
@@ -14,16 +16,31 @@ export class AreaSelectComponent implements OnInit {
   cityValue: string = null;
   countryValue: string = null;
 
-  provinces: Province[];
+  provinces: Province[] = [];
+  citys: City[] = [];
+  countrys: Country[] = [];
   constructor(private areaService: AreaService) {}
 
   ngOnInit() {
-    return this.areaService.getProvinces();
+    this.getProvinces();
+    console.log('=============', this.layout);
   }
 
-  getProvinces(): Province[] {
-    return this.areaService.getProvinces();
+  getProvinces() {
+    this.areaService.getProvinces().subscribe(res => {
+      this.provinces = res.data;
+    });
   }
 
-  provinceChange(value: { label: string; value: string; age: number }): void {}
+  provinceChange(value: { label: string; value: string; idx: number }): void {
+    this.areaService.getCitys(value).subscribe(res => {
+      this.citys = res.data;
+    });
+  }
+  cityChange(value: { label: string; value: string; idx: number }): void {
+    this.areaService.getCountrys(value).subscribe(res => {
+      this.countrys = res.data;
+    });
+  }
+  countryChange(value: { label: string; value: string; idx: number }): void {}
 }

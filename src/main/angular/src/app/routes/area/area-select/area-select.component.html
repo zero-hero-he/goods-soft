@@ -1,13 +1,32 @@
-<form nz-form class="area-form" [nzLayout]="layout">
-  <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="province">省</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-select style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="选择省份" [(ngModel)]="provinceValue"
-        (ngModelChange)="provinceChange($event)">
-        <ng-template class="province-item" *ngFor="let province of provinces">
-          <nz-option [nzLabel]="province.name" [nzValue]="province.provinceId"></nz-option>
-        </ng-template>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-</form>
+<!-- <form nz-form class="area-form" [nzLayout]="layout"> -->
+<nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="province">省</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24">
+    <nz-select name="area" style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="选择省"
+      [(ngModel)]="provinceValue" (ngModelChange)="provinceChange($event)">
+      <nz-option *ngFor="let province of provinces" [nzLabel]="province.name" [nzValue]="province.provinceId">
+      </nz-option>
+    </nz-select>
+  </nz-form-control>
+</nz-form-item>
+<nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="city">市</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24">
+    <nz-select name="area" style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="选择市" [(ngModel)]="cityValue"
+      (ngModelChange)="cityChange($event)">
+      <nz-option *ngFor="let city of citys" [nzLabel]="city.name" [nzValue]="city.cityId">
+      </nz-option>
+    </nz-select>
+  </nz-form-control>
+</nz-form-item>
+<nz-form-item>
+  <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="country">区</nz-form-label>
+  <nz-form-control [nzSm]="14" [nzXs]="24">
+    <nz-select name="area" style="width: 200px;" nzShowSearch nzAllowClear nzPlaceHolder="选择区"
+      [(ngModel)]="countryValue" (ngModelChange)="countryChange($event)">
+      <nz-option *ngFor="let country of countrys" [nzLabel]="country.name" [nzValue]="country.countryId">
+      </nz-option>
+    </nz-select>
+  </nz-form-control>
+</nz-form-item>
+<!-- </form> -->
