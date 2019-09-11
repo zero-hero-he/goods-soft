@@ -137,16 +137,12 @@ export class UserRegisterComponent implements OnDestroy {
       this.form.controls[key].markAsDirty();
       this.form.controls[key].updateValueAndValidity();
     });
-    console.log(this.form);
     if (this.form.invalid) {
-      console.log('data');
       return;
     }
 
     const data = this.form.value;
-    console.log(data);
     this.http.post('/auth/register?_allow_anonymous=true', data).subscribe((res: any) => {
-      console.log(data);
       if (res.resultCode !== '000') {
         this.error = res.resultMsg;
         return;
