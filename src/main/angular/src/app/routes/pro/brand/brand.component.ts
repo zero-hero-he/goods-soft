@@ -1,25 +1,45 @@
-import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  TemplateRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  AfterViewInit,
+} from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { tap, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange, STPage } from '@delon/abc';
-import { AreaSelectComponent } from '../../area/area-select/area-select.component';
+import { AreaService } from '../../area/area.service';
+import { Province } from '../../area/province';
+import { City } from '../../area/city';
+import { Country } from '../../area/country';
 
 @Component({
   selector: 'app-pro-brand',
   templateUrl: './brand.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProBrandComponent implements OnInit {
+export class ProBrandComponent implements OnInit, AfterViewInit {
   constructor(
     private http: _HttpClient,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
+    private areaService: AreaService,
   ) {}
   q: any = {
     name: '',
   };
+
+  provinceValue: string = null;
+  cityValue: string = null;
+  countryValue: string = null;
+
+  provinces: Province[] = [];
+  citys: City[] = [];
+  countrys: Country[] = [];
 
   total = 0;
 
@@ -47,7 +67,6 @@ export class ProBrandComponent implements OnInit {
   };
 
   @ViewChild('st', { static: false }) st: STComponent;
-  @ViewChild('area', { static: false }) area: AreaSelectComponent;
 
   columns: STColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },
@@ -103,10 +122,6 @@ export class ProBrandComponent implements OnInit {
               iData.note !== null && iData.note.length > 20 ? iData.note.substr(20) + '...' : iData.note;
             return iData;
           });
-        // this.data.forEach(i => {
-        //   i.noteShort = i.note !== null && i.note.length > 20 ? i.note.substr(20) + '...' : i.note;
-        // });
-        console.log(this.data);
         this.total = res.data.total;
         this.cdr.detectChanges();
       });
@@ -142,6 +157,9 @@ export class ProBrandComponent implements OnInit {
       nzTitle: '新建品牌',
       nzContent: tpl,
       nzOnOk: () => {
+        this.addData.province.provinceId = this.provinceValue;
+        this.addData.city.cityId = this.cityValue;
+        this.addData.country.countryId = this.countryValue;
         this.loading = true;
         this.http.put('/brand/add', this.addData).subscribe(() => this.getData());
       },
@@ -153,7 +171,30 @@ export class ProBrandComponent implements OnInit {
     setTimeout(() => this.getData());
   }
 
-  ngOnInit() {
-    this.getData();
+  getProvinces() {
+    this.areaService.getProvinces().subscribe(res => {
+      this.provinces = res.data;
+    });
   }
+
+  provinceChange(value: { label: string; value: string; idx: number }): void {
+    this.areaService.getCitys(value).subscribe(res => {
+      this.citys = res.data;
+    });
+  }
+  cityChange(value: { label: string; value: string; idx: number }): void {
+    this.areaService.getCountrys(value).subscribe(res => {
+      this.countrys = res.data;
+    });
+  }
+  countryChange(value: { label: string; value: string; idx: number }): void {}
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.getData();
+      this.getProvinces();
+    });
+  }
+
+  ngAfterViewInit(): void {}
 }

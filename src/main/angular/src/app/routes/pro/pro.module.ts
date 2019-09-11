@@ -9,13 +9,12 @@ import { ProChannelEditComponent } from './channel/edit/edit.component';
 import { ProChannelViewComponent } from './channel/view/view.component';
 import { AreaSelectComponent } from '../area/area-select/area-select.component';
 
-const COMPONENTS = [ProBrandComponent, ProChannelComponent];
+const COMPONENTS = [ProBrandComponent, ProChannelComponent, AreaSelectComponent];
 const COMPONENTS_NOROUNT = [
   ProBrandEditComponent,
   ProBrandViewComponent,
   ProChannelEditComponent,
   ProChannelViewComponent,
-  AreaSelectComponent,
 ];
 
 @NgModule({

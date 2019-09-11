@@ -83,28 +83,37 @@
   </nz-form-item>
   <nz-form-item>
 
-    <form nz-form>
-      <app-area-select #area>
-
-      </app-area-select>
-      <!-- <nz-form-item>
+    <form nz-form [nzLayout]="'inline'">
+      <nz-form-item>
         <nz-form-label nzFor="province">省</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="addData.province" name="province" placeholder="请输入品牌简称" id="province" />
+          <nz-select name="province" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择省"
+            [(ngModel)]="provinceValue" (ngModelChange)="provinceChange($event)">
+            <nz-option *ngFor="let province of provinces" [nzLabel]="province.name" [nzValue]="province.provinceId">
+            </nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzFor="city">市</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="addData.city" name="city" placeholder="请输入品牌简称" id="city" />
+          <nz-select name="city" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择市" [(ngModel)]="cityValue"
+            (ngModelChange)="cityChange($event)">
+            <nz-option *ngFor="let city of citys" [nzLabel]="city.name" [nzValue]="city.cityId">
+            </nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <nz-form-item *ngIf="countrys.length > 0">
         <nz-form-label nzFor="country">区</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="addData.country" name="country" placeholder="请输入品牌简称" id="country" />
+          <nz-select name="country" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择区"
+            [(ngModel)]="countryValue" (ngModelChange)="countryChange($event)">
+            <nz-option *ngFor="let country of countrys" [nzLabel]="country.name" [nzValue]="country.countryId">
+            </nz-option>
+          </nz-select>
         </nz-form-control>
-      </nz-form-item> -->
+      </nz-form-item>
     </form>
   </nz-form-item>
 

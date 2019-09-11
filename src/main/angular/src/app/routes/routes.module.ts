@@ -12,7 +12,6 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 // single pages
 import { CallbackComponent } from './callback/callback.component';
 import { UserLockComponent } from './passport/lock/lock.component';
-import { AreaSelectComponent } from './area/area-select/area-select.component';
 
 const COMPONENTS = [
   DashboardV1Component,
