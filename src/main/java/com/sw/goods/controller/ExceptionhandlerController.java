@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author songwen
@@ -33,6 +37,20 @@ public class ExceptionhandlerController {
     public HttpResult<?> exception(HttpServletRequest request, Exception exception) {
         log.error("raised exception : ", exception);
         return new HttpResult<>(Result.ERROR_CODE, exception.getMessage());
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public HttpResult<?> constraintViolationException(HttpServletRequest request, ConstraintViolationException exception) {
+        log.error("ConstraintViolationException : ", exception);
+        String msg = "";
+        Set<ConstraintViolation<?>> constraintViolationSet =  exception.getConstraintViolations();
+        Iterator<ConstraintViolation<?>> constraintViolationIterator =  constraintViolationSet.iterator();
+        if (constraintViolationIterator.hasNext()) {
+            msg = constraintViolationIterator.next().getMessageTemplate();
+        }
+        return new HttpResult<>(Result.ERROR_CODE, msg);
     }
 
     @ExceptionHandler(value = SoftException.class)
