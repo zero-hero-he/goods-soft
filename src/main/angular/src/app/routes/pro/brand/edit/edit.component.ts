@@ -5,22 +5,26 @@ import { of, Observable, BehaviorSubject } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { SFSchema, SFUISchema, SFSelectWidgetSchema, SFComponent } from '@delon/form';
 import { AreaService } from 'src/app/routes/area/area.service';
+import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-pro-brand-edit',
   templateUrl: './edit.component.html',
 })
 export class ProBrandEditComponent implements OnInit {
+  url = '/brand/update';
   modelName = '编辑';
   record: any = {};
   isSpinning = true;
   provinces: Observable<any>;
-  // citys: Observable<any>;
-  // countrys: Observable<any>;
+
+  provinceDefault = '';
+  cityDefault = '';
+  countryDefault = '';
 
   private citys = new BehaviorSubject<any>({});
   private countrys = new BehaviorSubject<any>({});
-
+  @ViewChild('sf', { static: false }) sf: SFComponent;
   schema: SFSchema = {
     properties: {
       name: { type: 'string', title: '品牌简称', minLength: 1, maxLength: 64 },
@@ -86,7 +90,6 @@ export class ProBrandEditComponent implements OnInit {
     return this.areaService.getProvinces().pipe(
       map(res => {
         const returnData = { children: [], label: '省', group: true };
-        // const returnData = { children: [] };
         returnData.children = Array(res.data.length)
           .fill({})
           .map((item: any, idx: number) => {
@@ -143,19 +146,34 @@ export class ProBrandEditComponent implements OnInit {
     if (this.record.pageType === 'add') {
       this.modelName = '新增';
       this.isSpinning = false;
+      this.url = '/brand/add';
+      return;
     }
     if (this.record.id > 0)
       this.http.get(`/brand/get/${this.record.id}`).subscribe(res => {
         this.record = res.data;
+        this.provinceDefault =
+          this.record === null || this.record.province === null ? '' : this.record.province.provinceId;
+        this.cityDefault = this.record === null || this.record.city === null ? '' : this.record.city.cityId;
+        this.countryDefault = this.record === null || this.record.country === null ? '' : this.record.country.countryId;
+        console.log(this.provinceDefault);
+        this.sf.getProperty('/province').
         this.isSpinning = false;
       });
   }
 
   save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+    if (this.record.pageType === 'add') {
+      this.http.put(`${this.url}`, value).subscribe(res => {
+        this.msgSrv.success('保存成功');
+        this.modal.close(true);
+      });
+    } else {
+      this.http.post(`${this.url}/${this.record.id}`, value).subscribe(res => {
+        this.msgSrv.success('更新成功');
+        this.modal.close(true);
+      });
+    }
   }
 
   close() {
