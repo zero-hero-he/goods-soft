@@ -26,7 +26,7 @@ export class ProChannelEditComponent implements OnInit {
       grid: { span: 12 },
     },
     $no: {
-      widget: 'text'
+      widget: 'text',
     },
     $href: {
       widget: 'string',
@@ -37,15 +37,12 @@ export class ProChannelEditComponent implements OnInit {
     },
   };
 
-  constructor(
-    private modal: NzModalRef,
-    private msgSrv: NzMessageService,
-    public http: _HttpClient,
-  ) {}
+  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {}
 
   ngOnInit(): void {
-    if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    console.log(this.record);
+    console.log(this.i);
+    if (this.record.id > 0) this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
   }
 
   save(value: any) {

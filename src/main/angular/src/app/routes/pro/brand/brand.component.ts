@@ -8,13 +8,14 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { _HttpClient } from '@delon/theme';
+import { _HttpClient, ModalHelper } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange, STPage } from '@delon/abc';
 import { AreaService } from '../../area/area.service';
 import { Province } from '../../area/province';
 import { City } from '../../area/city';
 import { Country } from '../../area/country';
+import { ProBrandEditComponent } from './edit/edit.component';
 
 @Component({
   selector: 'app-pro-brand',
@@ -28,6 +29,7 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     private areaService: AreaService,
+    private modal: ModalHelper,
   ) {}
   q: any = {
     name: '',
@@ -102,6 +104,23 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     },
     { title: '创建时间', type: 'date', index: 'createTime' },
     { title: '修改时间', type: 'date', index: 'updateTime' },
+    {
+      title: '',
+      buttons: [
+        // { text: '查看', click: (item: any) => `/form/${item.id}` },
+        {
+          text: '编辑',
+          type: 'static',
+          component: ProBrandEditComponent,
+          params: (record: STData) => {
+            console.log('编辑', record);
+            record.pageType = 'edit';
+            return { record };
+          },
+          click: 'load',
+        },
+      ],
+    },
   ];
 
   getData() {
@@ -152,17 +171,29 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     });
   }
 
-  add(tpl: TemplateRef<{}>) {
-    this.modalSrv.create({
-      nzTitle: '新建品牌',
-      nzContent: tpl,
-      nzOnOk: () => {
-        this.addData.province.provinceId = this.provinceValue;
-        this.addData.city.cityId = this.cityValue;
-        this.addData.country.countryId = this.countryValue;
-        this.loading = true;
-        this.http.put('/brand/add', this.addData).subscribe(() => this.getData());
-      },
+  // add(tpl: TemplateRef<{}>) {
+  //   this.modalSrv.create({
+  //     nzTitle: '新建品牌',
+  //     nzContent: tpl,
+  //     nzOnOk: () => {
+  //       this.addData.province.provinceId = this.provinceValue;
+  //       this.addData.city.cityId = this.cityValue;
+  //       this.addData.country.countryId = this.countryValue;
+  //       this.loading = true;
+  //       this.http.put('/brand/add', this.addData).subscribe(res => {
+  //         if(res.resultCode === '000') {
+  //           this.getData()
+  //         } else {
+  //           return false;
+  //         }
+  //       });
+  //     },
+  //   });
+  // }
+
+  add() {
+    this.modal.createStatic(ProBrandEditComponent, { record: { id: 0, pageType: 'add' } }).subscribe(res => {
+      this.st.reload();
     });
   }
 

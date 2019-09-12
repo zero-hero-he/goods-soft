@@ -1,51 +1,167 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema } from '@delon/form';
+import { of, Observable, BehaviorSubject } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
+import { SFSchema, SFUISchema, SFSelectWidgetSchema, SFComponent } from '@delon/form';
+import { AreaService } from 'src/app/routes/area/area.service';
 
 @Component({
   selector: 'app-pro-brand-edit',
   templateUrl: './edit.component.html',
 })
 export class ProBrandEditComponent implements OnInit {
+  modelName = '编辑';
   record: any = {};
-  i: any;
+  isSpinning = true;
+  provinces: Observable<any>;
+  citys: Observable<any>;
+  countrys: Observable<any>;
+
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      name: { type: 'string', title: '品牌简称', minLength: 1, maxLength: 64 },
+      fullName: { type: 'string', title: '品牌全称', minLength: 1, maxLength: 254 },
+      province: {
+        type: 'string',
+        title: '省',
+      },
+      city: {
+        type: 'string',
+        title: '市',
+      },
+      country: {
+        type: 'string',
+        title: '区',
+      },
+      address: { type: 'string', title: '详细地址' },
+      note: { type: 'string', title: '备注' },
+      // images: { type: 'string', title: '区' },
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['name', 'fullName'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 12 },
     },
-    $no: {
-      widget: 'text'
-    },
-    $href: {
+    $name: {
       widget: 'string',
     },
-    $description: {
+    $fullName: {
+      widget: 'string',
+    },
+    $address: {
+      widget: 'string',
+    },
+    $province: {
+      widget: 'select',
+      allowClear: true,
+      asyncData: () => this.getProvinces(),
+      change: (ngModel: any) => this.provinceChange(ngModel),
+    },
+    $city: {
+      widget: 'select',
+      allowClear: true,
+      // asyncData: () => this.citys,
+      // asyncData: () => this.citys.asObservable(),
+      change: (ngModel: any) => this.cityChange(ngModel),
+    },
+    $country: {
+      widget: 'select',
+      allowClear: true,
+      // asyncData: () => this.countrys,
+      change: (ngModel: any) => this.countryChange(ngModel),
+    },
+    $note: {
       widget: 'textarea',
       grid: { span: 24 },
     },
   };
 
+  getProvinces() {
+    return this.areaService.getProvinces().pipe(
+      map(res => {
+        const returnData = { children: [], label: '省', group: true };
+        // const returnData = { children: [] };
+        returnData.children = Array(res.data.length)
+          .fill({})
+          .map((item: any, idx: number) => {
+            const iData: any = res.data[idx];
+            iData.label = iData.name;
+            iData.value = iData.provinceId;
+            return iData;
+          });
+        return [returnData];
+      }),
+    );
+  }
+
+  provinceChange(value: any): void {
+    // this.areaService.getCitys(value).subscribe(res => {
+    //   let returnData = Array(res.data.length)
+    //     .fill({})
+    //     .map((item: any, idx: number) => {
+    //       const iData: any = res.data[idx];
+    //       iData.label = iData.name;
+    //       iData.value = iData.cityId;
+    //       return iData;
+    //     });
+    //   this.citys.next(returnData);
+    // });
+    this.areaService.getCitys(value).pipe(
+      map(res => {
+        const returnData = { children: [] };
+        returnData.children = Array(res.data.length)
+          .fill({})
+          .map((item: any, idx: number) => {
+            const iData: any = res.data[idx];
+            iData.label = iData.name;
+            iData.value = iData.cityId;
+            return iData;
+          });
+        return [returnData];
+      }),
+    );
+  }
+
+  cityChange(value: any): void {
+    this.areaService.getCountrys(value).pipe(
+      map(res => {
+        const returnData = { children: [], label: '区', group: true };
+        returnData.children = Array(res.data.length)
+          .fill({})
+          .map((item: any, idx: number) => {
+            const iData: any = res.data[idx];
+            iData.label = iData.name;
+            iData.value = iData.countryId;
+            return iData;
+          });
+        return [returnData];
+      }),
+    );
+  }
+
+  countryChange(value: any): void {}
+
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
+    private areaService: AreaService,
   ) {}
 
   ngOnInit(): void {
+    console.log(this.record);
+    if (this.record.pageType === 'add') {
+      this.modelName = '新增';
+      this.isSpinning = false;
+    }
     if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+      this.http.get(`/brand/get/${this.record.id}`).subscribe(res => {
+        this.record = res.data;
+        this.isSpinning = false;
+      });
   }
 
   save(value: any) {
