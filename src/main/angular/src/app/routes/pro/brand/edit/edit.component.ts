@@ -15,8 +15,11 @@ export class ProBrandEditComponent implements OnInit {
   record: any = {};
   isSpinning = true;
   provinces: Observable<any>;
-  citys: Observable<any>;
-  countrys: Observable<any>;
+  // citys: Observable<any>;
+  // countrys: Observable<any>;
+
+  private citys = new BehaviorSubject<any>({});
+  private countrys = new BehaviorSubject<any>({});
 
   schema: SFSchema = {
     properties: {
@@ -64,13 +67,13 @@ export class ProBrandEditComponent implements OnInit {
       widget: 'select',
       allowClear: true,
       // asyncData: () => this.citys,
-      // asyncData: () => this.citys.asObservable(),
+      asyncData: () => this.citys.asObservable(),
       change: (ngModel: any) => this.cityChange(ngModel),
     },
     $country: {
       widget: 'select',
       allowClear: true,
-      // asyncData: () => this.countrys,
+      asyncData: () => this.countrys.asObservable(),
       change: (ngModel: any) => this.countryChange(ngModel),
     },
     $note: {
@@ -98,48 +101,32 @@ export class ProBrandEditComponent implements OnInit {
   }
 
   provinceChange(value: any): void {
-    // this.areaService.getCitys(value).subscribe(res => {
-    //   let returnData = Array(res.data.length)
-    //     .fill({})
-    //     .map((item: any, idx: number) => {
-    //       const iData: any = res.data[idx];
-    //       iData.label = iData.name;
-    //       iData.value = iData.cityId;
-    //       return iData;
-    //     });
-    //   this.citys.next(returnData);
-    // });
-    this.areaService.getCitys(value).pipe(
-      map(res => {
-        const returnData = { children: [] };
-        returnData.children = Array(res.data.length)
-          .fill({})
-          .map((item: any, idx: number) => {
-            const iData: any = res.data[idx];
-            iData.label = iData.name;
-            iData.value = iData.cityId;
-            return iData;
-          });
-        return [returnData];
-      }),
-    );
+    this.areaService.getCitys(value).subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.cityId;
+          return iData;
+        });
+      this.citys.next([{ children: returnData, label: '市', group: true }]);
+      this.countrys.next([{ children: [], label: '区', group: true }]);
+    });
   }
 
   cityChange(value: any): void {
-    this.areaService.getCountrys(value).pipe(
-      map(res => {
-        const returnData = { children: [], label: '区', group: true };
-        returnData.children = Array(res.data.length)
-          .fill({})
-          .map((item: any, idx: number) => {
-            const iData: any = res.data[idx];
-            iData.label = iData.name;
-            iData.value = iData.countryId;
-            return iData;
-          });
-        return [returnData];
-      }),
-    );
+    this.areaService.getCountrys(value).subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.countryId;
+          return iData;
+        });
+      this.countrys.next([{ children: returnData, label: '区', group: true }]);
+    });
   }
 
   countryChange(value: any): void {}
