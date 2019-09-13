@@ -2,7 +2,6 @@ package com.sw.goods.service.impl;
 
 import com.sw.goods.constent.Result;
 import com.sw.goods.entity.Brand;
-import com.sw.goods.entity.Province;
 import com.sw.goods.exception.SoftException;
 import com.sw.goods.repository.BrandRepository;
 import com.sw.goods.repository.CityRepository;
@@ -11,7 +10,6 @@ import com.sw.goods.repository.ProvinceRepository;
 import com.sw.goods.service.BrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,15 +62,6 @@ public class BrandServiceImpl implements BrandService {
             throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
         }
         setArea(brand);
-//        tmpBrand.setName(brand.getName());
-//        tmpBrand.setFullName(brand.getFullName());
-//        tmpBrand.setContact(brand.getContact());
-//        tmpBrand.setProvince(brand.getProvince());
-//        tmpBrand.setCity(brand.getCity());
-//        tmpBrand.setCountry(brand.getCountry());
-//        tmpBrand.setAddress(brand.getAddress());
-//        tmpBrand.setNote(brand.getNote());
-//        tmpBrand.setImages(brand.getImages());
         return brandRepository.save(brand);
     }
 
