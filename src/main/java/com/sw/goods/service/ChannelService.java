@@ -1,6 +1,6 @@
 package com.sw.goods.service;
 
-import com.sw.goods.entity.Brand;
+import com.sw.goods.entity.Channel;
 import com.sw.goods.exception.SoftException;
 import org.springframework.data.domain.Page;
 
@@ -11,15 +11,15 @@ import java.util.List;
  * gmail: zero.hero.he@gmail.com
  * Created on 2019/9/7
  */
-public interface BrandService {
+public interface ChannelService {
 
-    Page<Brand> getByName(String name, int pageNumber, int pageSize);
+    Page<Channel> getByName(String name, int pageNumber, int pageSize);
 
-    Brand getById(long id);
+    Channel getById(long id);
 
-    Brand add(Brand brand);
+    Channel add(Channel channel);
 
-    Brand update(Brand brand) throws SoftException;
+    Channel update(Channel channel) throws SoftException;
 
     void delete(Long id) throws SoftException;
 

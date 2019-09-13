@@ -1,8 +1,8 @@
 package com.sw.goods.controller;
 
-import com.sw.goods.entity.Brand;
+import com.sw.goods.entity.Channel;
 import com.sw.goods.exception.SoftException;
-import com.sw.goods.service.BrandService;
+import com.sw.goods.service.ChannelService;
 import com.sw.goods.vo.BaseRequestInfo;
 import com.sw.goods.vo.HttpResult;
 import com.sw.goods.vo.PageResult;
@@ -18,36 +18,36 @@ import java.util.List;
  * Created on 2019/9/7
  */
 @RestController
-@RequestMapping("/brand")
-public class BrandController {
+@RequestMapping("/channel")
+public class ChannelController {
 
     @Autowired
-    private BrandService brandService;
+    private ChannelService channelService;
 
 
     @GetMapping("/get/name")
-    public HttpResult<PageResult<Brand>> getByName(String name, BaseRequestInfo baseRequestInfo) {
-        return new HttpResult<>(new PageResult<>(brandService.getByName(name, baseRequestInfo.getPi(), baseRequestInfo.getPs())));
+    public HttpResult<PageResult<Channel>> getByName(String name, BaseRequestInfo baseRequestInfo) {
+        return new HttpResult<>(new PageResult<>(channelService.getByName(name, baseRequestInfo.getPi(), baseRequestInfo.getPs())));
     }
 
     @GetMapping("/get/{id}")
-    public HttpResult<Brand> get(@PathVariable @NotNull Long id) {
-        return new HttpResult<>(brandService.getById(id));
+    public HttpResult<Channel> get(@PathVariable @NotNull Long id) {
+        return new HttpResult<>(channelService.getById(id));
     }
 
     @PutMapping("/add")
-    public HttpResult<Brand> add(@RequestBody Brand brand) {
-        return new HttpResult<>(brandService.add(brand));
+    public HttpResult<Channel> add(@RequestBody Channel channel) {
+        return new HttpResult<>(channelService.add(channel));
     }
 
     @PostMapping("/update")
-    public HttpResult<Brand> update(@RequestBody Brand brand) throws SoftException {
-        return new HttpResult<>(brandService.update(brand));
+    public HttpResult<Channel> update(@RequestBody Channel channel) throws SoftException {
+        return new HttpResult<>(channelService.update(channel));
     }
 
     @DeleteMapping("/delete/{id}")
     public HttpResult<Integer> delete(@PathVariable @NotNull List<Long> id) throws SoftException {
-        return new HttpResult<>(brandService.delete(id));
+        return new HttpResult<>(channelService.delete(id));
     }
 
 }
