@@ -2,54 +2,186 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
+import { AreaService } from 'src/app/routes/area/area.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-pro-channel-edit',
   templateUrl: './edit.component.html',
 })
 export class ProChannelEditComponent implements OnInit {
+  url = '/channel/update';
+  modelName = '编辑';
   record: any = {};
-  i: any;
+  isSpinning = true;
+
+  private provinces = new BehaviorSubject<any>({});
+  private citys = new BehaviorSubject<any>({});
+  private countrys = new BehaviorSubject<any>({});
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      id: { type: 'number', title: 'ID' },
+      name: { type: 'string', title: '渠道简称', minLength: 1, maxLength: 64 },
+      fullName: { type: 'string', title: '渠道全称', minLength: 1, maxLength: 254 },
+      province: {
+        type: 'string',
+        title: '省',
+      },
+      city: {
+        type: 'string',
+        title: '市',
+      },
+      country: {
+        type: 'string',
+        title: '区',
+      },
+      address: { type: 'string', title: '详细地址' },
+      note: { type: 'string', title: '备注' },
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['name', 'fullName'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 12 },
     },
-    $no: {
-      widget: 'text',
+    $id: {
+      hidden: true,
     },
-    $href: {
+    $name: {
       widget: 'string',
     },
-    $description: {
+    $fullName: {
+      widget: 'string',
+    },
+    $address: {
+      widget: 'string',
+    },
+    $province: {
+      widget: 'select',
+      allowClear: true,
+      asyncData: () => this.provinces.asObservable(),
+      change: (ngModel: any) => this.provinceChange(ngModel),
+    },
+    $city: {
+      widget: 'select',
+      allowClear: true,
+      asyncData: () => this.citys.asObservable(),
+      change: (ngModel: any) => this.cityChange(ngModel),
+    },
+    $country: {
+      widget: 'select',
+      allowClear: true,
+      asyncData: () => this.countrys.asObservable(),
+      change: (ngModel: any) => this.countryChange(ngModel),
+    },
+    $note: {
       widget: 'textarea',
       grid: { span: 24 },
     },
   };
 
-  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {}
+  async getProvinces() {
+    this.areaService.getProvinces().subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.provinceId;
+          return iData;
+        });
+      this.provinces.next([{ children: returnData, label: '省', group: true }]);
+    });
+  }
 
-  ngOnInit(): void {
-    console.log(this.record);
-    console.log(this.i);
-    if (this.record.id > 0) this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+  provinceChange(value: any) {
+    this.areaService.getCitys(value).subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.cityId;
+          return iData;
+        });
+      this.citys.next([{ children: returnData, label: '市', group: true }]);
+    });
+    this.countrys.next([{ children: [], label: '区', group: true }]);
+  }
+
+  cityChange(value: any) {
+    this.areaService.getCountrys(value).subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.countryId;
+          return iData;
+        });
+      this.countrys.next([{ children: returnData, label: '区', group: true }]);
+    });
+  }
+
+  countryChange(value: any): void {}
+
+  constructor(
+    private modal: NzModalRef,
+    private msgSrv: NzMessageService,
+    public http: _HttpClient,
+    private areaService: AreaService,
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    await this.getProvinces();
+    if (this.record.pageType === 'add') {
+      this.modelName = '新增';
+      this.isSpinning = false;
+      this.url = '/channel/add';
+      return;
+    }
+    if (this.record.id > 0)
+      await this.http.get(`/channel/get/${this.record.id}`).subscribe(async res => {
+        this.record = res.data;
+        if (this.record !== null && this.record.province !== null) {
+          if (this.record.province) {
+            await this.provinceChange(this.record.province.provinceId);
+            this.record.province = this.record.province.provinceId;
+          }
+          if (this.record.city) {
+            await this.cityChange(this.record.city.cityId);
+            this.record.city = this.record.city.cityId;
+          }
+          if (this.record.country) {
+            await this.countryChange(this.record.country.countryId);
+            this.record.country = this.record.country.countryId;
+          }
+        }
+        this.isSpinning = false;
+      });
   }
 
   save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+    const data = JSON.parse(JSON.stringify(value));
+    const province: string = value.province;
+    const city: string = value.city;
+    const country: string = value.country;
+    data.province = { provinceId: province };
+    data.city = { cityId: city };
+    data.country = { countryId: country };
+
+    if (this.record.pageType === 'add') {
+      this.http.put(`${this.url}`, data).subscribe(res => {
+        this.msgSrv.success('保存成功');
+        this.modal.close(true);
+      });
+    } else {
+      this.http.post(`${this.url}`, data).subscribe(res => {
+        this.msgSrv.success('更新成功');
+        this.modal.close(true);
+      });
+    }
   }
 
   close() {
