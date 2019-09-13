@@ -1,21 +1,9 @@
 import { ProBrandViewComponent } from './view/view.component';
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  TemplateRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { tap } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange, STPage } from '@delon/abc';
-import { AreaService } from '../../area/area.service';
-import { Province } from '../../area/province';
-import { City } from '../../area/city';
-import { Country } from '../../area/country';
 import { ProBrandEditComponent } from './edit/edit.component';
 
 @Component({
@@ -29,20 +17,11 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     public msg: NzMessageService,
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
-    private areaService: AreaService,
     private modal: ModalHelper,
   ) {}
   q: any = {
     name: '',
   };
-
-  provinceValue: string = null;
-  cityValue: string = null;
-  countryValue: string = null;
-
-  provinces: Province[] = [];
-  citys: City[] = [];
-  countrys: Country[] = [];
 
   total = 0;
 
@@ -176,33 +155,21 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
   }
 
   remove() {
-    this.http.delete('/brand/delete', { nos: this.selectedRows.map(i => i.no).join(',') }).subscribe((res: any) => {
-      console.log(res);
-      this.msg.success(`删除了 ${res.data} 笔`);
-      this.getData();
-      this.st.clearCheck();
+    this.modalSrv.confirm({
+      nzTitle: '确认删除选择项?',
+      // nzContent: '<b style="color: red;">Some descriptions</b>',
+      nzOkText: '删除',
+      nzOkType: 'danger',
+      nzOnOk: () =>
+        this.http.delete(`/brand/delete/${this.selectedRows.map(i => i.id)}`).subscribe((res: any) => {
+          console.log(res);
+          this.msg.success(`删除了 ${res.data} 笔`);
+          this.getData();
+          this.st.clearCheck();
+        }),
+      nzCancelText: '再想想',
     });
   }
-
-  // add(tpl: TemplateRef<{}>) {
-  //   this.modalSrv.create({
-  //     nzTitle: '新建品牌',
-  //     nzContent: tpl,
-  //     nzOnOk: () => {
-  //       this.addData.province.provinceId = this.provinceValue;
-  //       this.addData.city.cityId = this.cityValue;
-  //       this.addData.country.countryId = this.countryValue;
-  //       this.loading = true;
-  //       this.http.put('/brand/add', this.addData).subscribe(res => {
-  //         if(res.resultCode === '000') {
-  //           this.getData()
-  //         } else {
-  //           return false;
-  //         }
-  //       });
-  //     },
-  //   });
-  // }
 
   add() {
     this.modal.createStatic(ProBrandEditComponent, { record: { pageType: 'add' } }).subscribe(res => {
@@ -215,28 +182,9 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.getData());
   }
 
-  getProvinces() {
-    this.areaService.getProvinces().subscribe(res => {
-      this.provinces = res.data;
-    });
-  }
-
-  provinceChange(value: { label: string; value: string; idx: number }): void {
-    this.areaService.getCitys(value).subscribe(res => {
-      this.citys = res.data;
-    });
-  }
-  cityChange(value: { label: string; value: string; idx: number }): void {
-    this.areaService.getCountrys(value).subscribe(res => {
-      this.countrys = res.data;
-    });
-  }
-  countryChange(value: { label: string; value: string; idx: number }): void {}
-
   ngOnInit() {
     setTimeout(() => {
       this.getData();
-      this.getProvinces();
     });
   }
 

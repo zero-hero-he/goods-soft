@@ -11,16 +11,6 @@
           </nz-form-control>
         </nz-form-item>
       </div>
-      <!-- <div nz-col nzMd="8" nzSm="24">
-        <nz-form-item>
-          <nz-form-label nzFor="status">使用状态</nz-form-label>
-          <nz-form-control>
-            <nz-select [(ngModel)]="q.status" name="status" id="status" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
-              <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="idx"></nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div> -->
 
       <div nz-col [nzSpan]="8">
         <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
@@ -28,12 +18,11 @@
       </div>
     </div>
   </form>
-  <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+  <button nz-button (click)="add()" [nzType]="'primary'">
     <i nz-icon nzType="plus"></i>
     <span>新建</span>
   </button>
   <ng-container *ngIf="selectedRows.length > 0">
-    <!-- <button nz-button>批量操作</button> -->
     <button nz-button nz-dropdown [nzDropdownMenu]="batchMenu" nzPlacement="bottomLeft">
       更多操作
       <i nz-icon nzType="down"></i>
@@ -61,66 +50,3 @@
   </st>
 
 </nz-card>
-
-<ng-template #modalContent>
-  <nz-form-item>
-    <nz-form-label nzFor="name">品牌简称</nz-form-label>
-    <nz-form-control>
-      <input nz-input required [(ngModel)]="addData.name" name="name" placeholder="请输入品牌简称" id="name" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="fullName">品牌全称</nz-form-label>
-    <nz-form-control>
-      <input nz-input required [(ngModel)]="addData.fullName" name="fullName" placeholder="请输入品牌全称" id="fullName" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="contact">联系方式</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="addData.contact" name="contact" placeholder="请输入联系方式" id="contact" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="province">省</nz-form-label>
-    <nz-form-control>
-      <nz-select name="province" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择省"
-        [(ngModel)]="provinceValue" (ngModelChange)="provinceChange($event)">
-        <nz-option *ngFor="let province of provinces" [nzLabel]="province.name" [nzValue]="province.provinceId">
-        </nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="city">市</nz-form-label>
-    <nz-form-control>
-      <nz-select name="city" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择市" [(ngModel)]="cityValue"
-        (ngModelChange)="cityChange($event)">
-        <nz-option *ngFor="let city of citys" [nzLabel]="city.name" [nzValue]="city.cityId">
-        </nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item *ngIf="countrys.length > 0">
-    <nz-form-label nzFor="country">区</nz-form-label>
-    <nz-form-control>
-      <nz-select name="country" style="width: 150px" nzShowSearch nzAllowClear nzPlaceHolder="选择区"
-        [(ngModel)]="countryValue" (ngModelChange)="countryChange($event)">
-        <nz-option *ngFor="let country of countrys" [nzLabel]="country.name" [nzValue]="country.countryId">
-        </nz-option>
-      </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="address">详细地址</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="addData.address" name="address" placeholder="请输入详细地址" id="address" />
-    </nz-form-control>
-  </nz-form-item>
-  <nz-form-item>
-    <nz-form-label nzFor="note">备注</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="addData.note" name="note" placeholder="备注" id="note" />
-    </nz-form-control>
-  </nz-form-item>
-</ng-template>

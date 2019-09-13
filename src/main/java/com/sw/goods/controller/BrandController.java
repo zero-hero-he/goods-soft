@@ -46,14 +46,8 @@ public class BrandController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public HttpResult<Integer> delete(@PathVariable @NotNull Long id) throws SoftException {
-        brandService.delete(id);
-        return new HttpResult<>(1);
-    }
-
-    @DeleteMapping("/delete")
-    public HttpResult<Integer> deletes(@NotNull List<Long> ids) throws SoftException {
-        return new HttpResult<>(brandService.delete(ids));
+    public HttpResult<Integer> delete(@PathVariable @NotNull List<Long> id) throws SoftException {
+        return new HttpResult<>(brandService.delete(id));
     }
 
 }
