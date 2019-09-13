@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { of, Observable, BehaviorSubject } from 'rxjs';
@@ -11,17 +11,14 @@ import { ifStmt } from '@angular/compiler/src/output/output_ast';
   selector: 'app-pro-brand-edit',
   templateUrl: './edit.component.html',
 })
-export class ProBrandEditComponent implements OnInit {
+export class ProBrandEditComponent implements OnInit, AfterViewInit {
   url = '/brand/update';
   modelName = '编辑';
   record: any = {};
   isSpinning = true;
-  provinces: Observable<any>;
+  // provinces: Observable<any>;
 
-  provinceDefault = '';
-  cityDefault = '';
-  countryDefault = '';
-
+  private provinces = new BehaviorSubject<any>({});
   private citys = new BehaviorSubject<any>({});
   private countrys = new BehaviorSubject<any>({});
   @ViewChild('sf', { static: false }) sf: SFComponent;
@@ -64,7 +61,8 @@ export class ProBrandEditComponent implements OnInit {
     $province: {
       widget: 'select',
       allowClear: true,
-      asyncData: () => this.getProvinces(),
+      // asyncData: () => this.getProvinces(),
+      asyncData: () => this.provinces.asObservable(),
       change: (ngModel: any) => this.provinceChange(ngModel),
     },
     $city: {
@@ -86,24 +84,37 @@ export class ProBrandEditComponent implements OnInit {
     },
   };
 
-  getProvinces() {
-    return this.areaService.getProvinces().pipe(
-      map(res => {
-        const returnData = { children: [], label: '省', group: true };
-        returnData.children = Array(res.data.length)
-          .fill({})
-          .map((item: any, idx: number) => {
-            const iData: any = res.data[idx];
-            iData.label = iData.name;
-            iData.value = iData.provinceId;
-            return iData;
-          });
-        return [returnData];
-      }),
-    );
+  async getProvinces() {
+    // this.areaService.getProvinces().pipe(
+    //   map(res => {
+    //     const returnData = { children: [], label: '省', group: true };
+    //     returnData.children = Array(res.data.length)
+    //       .fill({})
+    //       .map((item: any, idx: number) => {
+    //         const iData: any = res.data[idx];
+    //         iData.label = iData.name;
+    //         iData.value = iData.provinceId;
+    //         return iData;
+    //       });
+    //     return [returnData];
+    //   }),
+    // );
+
+    this.areaService.getProvinces().subscribe(res => {
+      const returnData = Array(res.data.length)
+        .fill({})
+        .map((item: any, idx: number) => {
+          const iData: any = res.data[idx];
+          iData.label = iData.name;
+          iData.value = iData.provinceId;
+          return iData;
+        });
+      this.provinces.next([{ children: returnData, label: '省', group: true }]);
+      // this.countrys.next([{ children: [], label: '区', group: true }]);
+    });
   }
 
-  provinceChange(value: any): void {
+  provinceChange(value: any) {
     this.areaService.getCitys(value).subscribe(res => {
       const returnData = Array(res.data.length)
         .fill({})
@@ -118,7 +129,7 @@ export class ProBrandEditComponent implements OnInit {
     });
   }
 
-  cityChange(value: any): void {
+  cityChange(value: any) {
     this.areaService.getCountrys(value).subscribe(res => {
       const returnData = Array(res.data.length)
         .fill({})
@@ -141,8 +152,9 @@ export class ProBrandEditComponent implements OnInit {
     private areaService: AreaService,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     console.log(this.record);
+    await this.getProvinces();
     if (this.record.pageType === 'add') {
       this.modelName = '新增';
       this.isSpinning = false;
@@ -150,17 +162,27 @@ export class ProBrandEditComponent implements OnInit {
       return;
     }
     if (this.record.id > 0)
-      this.http.get(`/brand/get/${this.record.id}`).subscribe(res => {
+      await this.http.get(`/brand/get/${this.record.id}`).subscribe(async res => {
         this.record = res.data;
-        this.provinceDefault =
-          this.record === null || this.record.province === null ? '' : this.record.province.provinceId;
-        this.cityDefault = this.record === null || this.record.city === null ? '' : this.record.city.cityId;
-        this.countryDefault = this.record === null || this.record.country === null ? '' : this.record.country.countryId;
-        console.log(this.provinceDefault);
-        this.sf.getProperty('/province').
+        if (this.record !== null && this.record.province !== null) {
+          if (this.record.province) {
+            await this.provinceChange(this.record.province.provinceId);
+            this.record.province = this.record.province.provinceId;
+          }
+          if (this.record.city) {
+            await this.cityChange(this.record.city.cityId);
+            this.record.city = this.record.city.cityId;
+          }
+          if (this.record.country) {
+            await this.countryChange(this.record.country.countryId);
+            this.record.country = this.record.country.countryId;
+          }
+        }
         this.isSpinning = false;
       });
   }
+
+  ngAfterViewInit() {}
 
   save(value: any) {
     if (this.record.pageType === 'add') {
