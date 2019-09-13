@@ -10,14 +10,15 @@ export class ProBrandViewComponent implements OnInit {
   record: any = {};
   i: any;
 
-  constructor(
-    private modal: NzModalRef,
-    public msgSrv: NzMessageService,
-    public http: _HttpClient
-  ) { }
+  constructor(private modal: NzModalRef, public msgSrv: NzMessageService, public http: _HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get(`/user/${this.record.id}`).subscribe(res => this.i = res);
+    this.http.get(`/brand/get/${this.record.id}`).subscribe(res => {
+      this.i = res.data;
+      this.i.provinceName = this.i.province !== null ? this.i.province.name : '';
+      this.i.cityName = this.i.city !== null ? this.i.city.name : '';
+      this.i.countryName = this.i.country !== null ? this.i.country.name : '';
+    });
   }
 
   close() {

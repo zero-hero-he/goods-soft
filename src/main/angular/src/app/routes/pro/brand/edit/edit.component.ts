@@ -106,8 +106,8 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
           return iData;
         });
       this.citys.next([{ children: returnData, label: '市', group: true }]);
-      this.countrys.next([{ children: [], label: '区', group: true }]);
     });
+    this.countrys.next([{ children: [], label: '区', group: true }]);
   }
 
   cityChange(value: any) {

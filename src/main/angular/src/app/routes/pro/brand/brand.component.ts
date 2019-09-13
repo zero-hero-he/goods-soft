@@ -1,3 +1,4 @@
+import { ProBrandViewComponent } from './view/view.component';
 import {
   Component,
   OnInit,
@@ -107,13 +108,23 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
     {
       title: '',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
+        {
+          text: '查看',
+          type: 'static',
+          component: ProBrandViewComponent,
+          params: (record: STData) => {
+            console.log('查看', record);
+            return { record };
+          },
+          click: () => {
+            this.getData();
+          },
+        },
         {
           text: '编辑',
           type: 'static',
           component: ProBrandEditComponent,
           params: (record: STData) => {
-            console.log('编辑', record);
             record.pageType = 'edit';
             return { record };
           },
