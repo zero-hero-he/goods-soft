@@ -24,7 +24,7 @@ public class Batch extends BaseInfo implements Serializable {
 
 
     private static final long serialVersionUID = 1479167772632156343L;
-    @Column(name = "BATCH_ID", length = 30, unique = true)
+    @Column(name = "BATCH_ID", length = 30, unique = true, nullable = false)
     @NotNull
     @NotBlank(message = "批次号不能为空")
     @Length(min = 1, max = 30, message = "批次号长度为1~30")

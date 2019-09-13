@@ -25,13 +25,13 @@ import java.util.List;
 public class Channel extends BaseInfo implements Serializable {
     private static final long serialVersionUID = -2945611784305546660L;
 
-    @Column(name = "NAME", length = 64)
+    @Column(name = "NAME", length = 64, nullable = false)
     @NotNull
     @NotBlank(message = "渠道简称不能为空")
     @Length(min = 1, max = 64, message = "渠道简称为1~64")
     private String name;
 
-    @Column(name = "FULL_NAME", length = 254)
+    @Column(name = "FULL_NAME", length = 254, nullable = false)
     @NotNull
     @NotBlank(message = "渠道全称不能为空")
     @Length(min = 1, max = 254, message = "渠道全称为1~254")

@@ -27,11 +27,9 @@ public class Province implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "NAME", length = 64)
-    @NotNull
+    @Column(name = "NAME", length = 64, nullable = false)
     private String name;
 
-    @Column(name = "PROVINCE_ID", length = 12, unique = true)
-    @NotNull
+    @Column(name = "PROVINCE_ID", length = 12, unique = true, nullable = false)
     private String provinceId;
 }

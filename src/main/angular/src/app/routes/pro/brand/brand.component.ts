@@ -117,7 +117,9 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
             record.pageType = 'edit';
             return { record };
           },
-          click: 'load',
+          click: () => {
+            this.getData();
+          },
         },
       ],
     },
@@ -192,8 +194,8 @@ export class ProBrandComponent implements OnInit, AfterViewInit {
   // }
 
   add() {
-    this.modal.createStatic(ProBrandEditComponent, { record: { id: 0, pageType: 'add' } }).subscribe(res => {
-      this.st.reload();
+    this.modal.createStatic(ProBrandEditComponent, { record: { pageType: 'add' } }).subscribe(res => {
+      this.getData();
     });
   }
 

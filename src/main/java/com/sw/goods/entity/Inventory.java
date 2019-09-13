@@ -31,12 +31,12 @@ public class Inventory extends BaseInfo implements Serializable {
     /**
      * 库存数量
      */
-    @Column(name = "INVENTORY_COUNT")
+    @Column(name = "INVENTORY_COUNT", nullable = false)
     private long inventoryCount;
 
     /**
      * 总量
      */
-    @Column(name = "ALL_COUNT")
+    @Column(name = "ALL_COUNT", nullable = false)
     private long allCount;
 }

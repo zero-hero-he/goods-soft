@@ -38,19 +38,17 @@ public class BaseInfo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "brand_seq")
     protected Long id;
 
-    @Column(name = "CREATE_TIME")
+    @Column(name = "CREATE_TIME", nullable = false)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     protected Date createTime;
 
-    @Column(name = "UPDATE_TIME")
+    @Column(name = "UPDATE_TIME", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @UpdateTimestamp
-    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     protected Date updateTime = new Date();
 

@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -23,8 +22,7 @@ import java.io.Serializable;
 public class Image extends BaseInfo implements Serializable {
     private static final long serialVersionUID = -8200453490452804291L;
 
-    @Column(name = "NAME", length = 512)
-    @NotNull
+    @Column(name = "NAME", length = 512, nullable = false)
     @NotBlank(message = "图片地址不能为空")
     @Length(max = 512, message = "图片地址最大长度512")
     private String imageUrl;

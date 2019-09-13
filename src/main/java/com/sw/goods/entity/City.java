@@ -27,14 +27,11 @@ public class City implements Serializable {
     private Integer id;
 
     @Column(name = "NAME", length = 64)
-    @NotNull
     private String name;
 
     @Column(name = "PROVINCE_ID", length = 12)
-    @NotNull
     private String provinceId;
 
     @Column(name = "CITY_ID", length = 12, unique = true)
-    @NotNull
     private String cityId;
 }

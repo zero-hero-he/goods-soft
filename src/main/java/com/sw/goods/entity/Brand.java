@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+
 /**
  * 厂商信息表
  *
@@ -42,28 +44,28 @@ public class Brand extends BaseInfo implements Serializable {
     @Length(max = 20, message = "联系电话的最大长度为20")
     private String contact;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action= NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "PROVINCE_ID", referencedColumnName = "PROVINCE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Province province;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action= NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "CITY_ID", referencedColumnName = "CITY_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private City city;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action= NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "COUNTRY_ID", referencedColumnName = "COUNTRY_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Country country;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action= NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "TOWN_ID", referencedColumnName = "TOWN_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Town town;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @NotFound(action= NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "VILLAGE_ID", referencedColumnName = "VILLAGE_ID", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Village village;
 
@@ -75,7 +77,7 @@ public class Brand extends BaseInfo implements Serializable {
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
     @JoinColumn(name = "IMAGE_ID")
     private List<Image> images;
 

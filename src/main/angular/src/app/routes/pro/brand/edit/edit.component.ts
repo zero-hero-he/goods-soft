@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { of, Observable, BehaviorSubject } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
-import { SFSchema, SFUISchema, SFSelectWidgetSchema, SFComponent } from '@delon/form';
+import { BehaviorSubject } from 'rxjs';
+import { SFSchema, SFUISchema } from '@delon/form';
 import { AreaService } from 'src/app/routes/area/area.service';
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-pro-brand-edit',
@@ -16,14 +14,13 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
   modelName = '编辑';
   record: any = {};
   isSpinning = true;
-  // provinces: Observable<any>;
 
   private provinces = new BehaviorSubject<any>({});
   private citys = new BehaviorSubject<any>({});
   private countrys = new BehaviorSubject<any>({});
-  @ViewChild('sf', { static: false }) sf: SFComponent;
   schema: SFSchema = {
     properties: {
+      id: { type: 'number', title: 'ID' },
       name: { type: 'string', title: '品牌简称', minLength: 1, maxLength: 64 },
       fullName: { type: 'string', title: '品牌全称', minLength: 1, maxLength: 254 },
       province: {
@@ -40,7 +37,6 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
       },
       address: { type: 'string', title: '详细地址' },
       note: { type: 'string', title: '备注' },
-      // images: { type: 'string', title: '区' },
     },
     required: ['name', 'fullName'],
   };
@@ -48,6 +44,9 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 12 },
+    },
+    $id: {
+      hidden: true,
     },
     $name: {
       widget: 'string',
@@ -61,14 +60,12 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
     $province: {
       widget: 'select',
       allowClear: true,
-      // asyncData: () => this.getProvinces(),
       asyncData: () => this.provinces.asObservable(),
       change: (ngModel: any) => this.provinceChange(ngModel),
     },
     $city: {
       widget: 'select',
       allowClear: true,
-      // asyncData: () => this.citys,
       asyncData: () => this.citys.asObservable(),
       change: (ngModel: any) => this.cityChange(ngModel),
     },
@@ -85,21 +82,6 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
   };
 
   async getProvinces() {
-    // this.areaService.getProvinces().pipe(
-    //   map(res => {
-    //     const returnData = { children: [], label: '省', group: true };
-    //     returnData.children = Array(res.data.length)
-    //       .fill({})
-    //       .map((item: any, idx: number) => {
-    //         const iData: any = res.data[idx];
-    //         iData.label = iData.name;
-    //         iData.value = iData.provinceId;
-    //         return iData;
-    //       });
-    //     return [returnData];
-    //   }),
-    // );
-
     this.areaService.getProvinces().subscribe(res => {
       const returnData = Array(res.data.length)
         .fill({})
@@ -110,7 +92,6 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
           return iData;
         });
       this.provinces.next([{ children: returnData, label: '省', group: true }]);
-      // this.countrys.next([{ children: [], label: '区', group: true }]);
     });
   }
 
@@ -153,7 +134,6 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    console.log(this.record);
     await this.getProvinces();
     if (this.record.pageType === 'add') {
       this.modelName = '新增';
@@ -185,13 +165,21 @@ export class ProBrandEditComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {}
 
   save(value: any) {
+    const data = JSON.parse(JSON.stringify(value));
+    const province: string = value.province;
+    const city: string = value.city;
+    const country: string = value.country;
+    data.province = { provinceId: province };
+    data.city = { cityId: city };
+    data.country = { countryId: country };
+
     if (this.record.pageType === 'add') {
-      this.http.put(`${this.url}`, value).subscribe(res => {
+      this.http.put(`${this.url}`, data).subscribe(res => {
         this.msgSrv.success('保存成功');
         this.modal.close(true);
       });
     } else {
-      this.http.post(`${this.url}/${this.record.id}`, value).subscribe(res => {
+      this.http.post(`${this.url}`, data).subscribe(res => {
         this.msgSrv.success('更新成功');
         this.modal.close(true);
       });
