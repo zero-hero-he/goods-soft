@@ -71,13 +71,13 @@
         {
           "text": "批次管理",
           "i18n": "批次管理",
-          "link": "/batch",
+          "link": "/pro/batch",
           "icon": "anticon-ordered-list"
         },
         {
           "text": "产品管理",
           "i18n": "产品管理",
-          "link": "/product",
+          "link": "/pro/product",
           "icon": "anticon-project"
         }
         ,
@@ -88,12 +88,12 @@
           "children": [
             {
               "text": "现行价格",
-              "link": "/price",
+              "link": "/pro/price",
               "i18n": "现行价格"
             },
             {
               "text": "历史价格",
-              "link": "/history-price",
+              "link": "/pro/history-price",
               "i18n": "历史价格"
             }
           ]

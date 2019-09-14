@@ -8,13 +8,18 @@ import { ProChannelComponent } from './channel/channel.component';
 import { ProChannelEditComponent } from './channel/edit/edit.component';
 import { ProChannelViewComponent } from './channel/view/view.component';
 import { AreaSelectComponent } from '../area/area-select/area-select.component';
+import { ProBatchComponent } from './batch/batch.component';
+import { ProBatchEditComponent } from './batch/edit/edit.component';
+import { ProBatchViewComponent } from './batch/view/view.component';
 
-const COMPONENTS = [ProBrandComponent, ProChannelComponent, AreaSelectComponent];
+const COMPONENTS = [ProBrandComponent, ProChannelComponent, AreaSelectComponent, ProBatchComponent];
 const COMPONENTS_NOROUNT = [
   ProBrandEditComponent,
   ProBrandViewComponent,
   ProChannelEditComponent,
   ProChannelViewComponent,
+  ProBatchEditComponent,
+  ProBatchViewComponent,
 ];
 
 @NgModule({
