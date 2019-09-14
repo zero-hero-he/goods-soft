@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="1800">
+    <Properties>
+        <property name="basePath">./log</property>
+
+        <!-- 控制台默认输出格式,"%-5level":日志级别,"%l":输出完整的错误位置,是小写的L,因为有行号显示,所以影响日志输出的性能 -->
+        <property name="console_log_pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %l - %m%n</property>
+        <!-- 日志文件默认输出格式,不带行号输出(行号显示会影响日志输出性能);%C:大写,类名;%M:方法名;%m:错误信息;%n:换行 -->
+        <property name="log_pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%t] %C.%M - %m%n</property>
+
+        <!-- 日志默认切割的最小单位 -->
+        <property name="every_file_size">20MB</property>
+        <!-- 日志默认输出级别 -->
+        <property name="output_log_level">DEBUG</property>
+
+        <!-- 日志默认存放路径(所有级别日志) -->
+        <property name="rolling_fileName">${basePath}/logging.log</property>
+        <!-- 日志默认压缩路径,将超过指定文件大小的日志,自动存入按"年月"建立的文件夹下面并进行压缩,作为存档 -->
+        <property name="rolling_filePattern">${basePath}/%d{yyyy-MM}/all-%d{yyyy-MM-dd}-%i.log.gz</property>
+        <!-- 日志默认同类型日志,同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
+        <property name="rolling_max">50</property>
+
+        <!-- 控制台显示的日志最低级别 -->
+        <property name="console_print_level">DEBUG</property>
+
+    </Properties>
+
+    <!--定义appender -->
+    <appenders>
+        <!-- 用来定义输出到控制台的配置 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 设置控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch)-->
+            <ThresholdFilter level="${console_print_level}" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 设置输出格式,不设置默认为:%m%n -->
+            <PatternLayout pattern="${console_log_pattern}"/>
+        </Console>
+
+        <!-- 打印root中指定的level级别以上的日志到文件 -->
+        <RollingFile name="RollingFile" fileName="${rolling_fileName}" filePattern="${rolling_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            <!-- 设置同类型日志,同一文件夹下可以存放的数量,如果不设置此属性则默认存放7个文件 -->
+            <DefaultRolloverStrategy max="${rolling_max}" />
+            <!-- 匹配INFO以及以上级别 -->
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+    </appenders>
+
+    <!--然后定义logger,只有定义了logger并引入的appender,appender才会生效-->
+    <loggers>
+        <!--建立一个默认的root的logger-->
+        <root level="${output_log_level}">
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>
