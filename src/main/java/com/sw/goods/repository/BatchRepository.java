@@ -26,11 +26,9 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
             nativeQuery = true)
     Page<Batch> findByNameLikeAndBatchIdLike(String batchId, String name, Pageable pageable);
 
-//    Page<Batch> findByNameLikeAndBatchIdLike(String batchId, String name, Pageable pageable);
-
     @Modifying
     @Transactional(rollbackFor = Exception.class)
-    @Query(value = "delete from brand where id in (?1)", nativeQuery = true)
+    @Query(value = "delete from batch where id in (?1)", nativeQuery = true)
     int deleteBatch(List<Long> ids);
 
 }

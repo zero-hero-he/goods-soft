@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
@@ -8,51 +8,65 @@ import { SFSchema, SFUISchema } from '@delon/form';
   templateUrl: './edit.component.html',
 })
 export class ProBatchEditComponent implements OnInit {
+  url = '/batch/update';
+  modelName = '编辑';
   record: any = {};
-  i: any;
+  isSpinning = true;
+
   schema: SFSchema = {
     properties: {
-      no: { type: 'string', title: '编号' },
-      owner: { type: 'string', title: '姓名', maxLength: 15 },
-      callNo: { type: 'number', title: '调用次数' },
-      href: { type: 'string', title: '链接', format: 'uri' },
-      description: { type: 'string', title: '描述', maxLength: 140 },
+      id: { type: 'number', title: 'ID' },
+      name: { type: 'string', title: '批次名称', minLength: 1, maxLength: 64 },
+      batchId: { type: 'string', title: '批次号', minLength: 1, maxLength: 30 },
     },
-    required: ['owner', 'callNo', 'href', 'description'],
+    required: ['name', 'batchId'],
   };
   ui: SFUISchema = {
     '*': {
       spanLabelFixed: 100,
       grid: { span: 12 },
     },
-    $no: {
-      widget: 'text'
+    $id: {
+      hidden: true,
     },
-    $href: {
+    $name: {
       widget: 'string',
     },
-    $description: {
-      widget: 'textarea',
-      grid: { span: 24 },
+    $batchId: {
+      widget: 'string',
     },
   };
 
-  constructor(
-    private modal: NzModalRef,
-    private msgSrv: NzMessageService,
-    public http: _HttpClient,
-  ) {}
+  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {}
 
-  ngOnInit(): void {
+  ngOnInit(): Promise<void> {
+    if (this.record.pageType === 'add') {
+      this.modelName = '新增';
+      this.isSpinning = false;
+      this.url = '/batch/add';
+      return;
+    }
     if (this.record.id > 0)
-    this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+      this.http.get(`/batch/get/${this.record.id}`).subscribe(async res => {
+        this.record = res.data;
+        this.isSpinning = false;
+      });
   }
 
   save(value: any) {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
-    });
+    const data = JSON.parse(JSON.stringify(value));
+
+    if (this.record.pageType === 'add') {
+      this.http.put(`${this.url}`, data).subscribe(res => {
+        this.msgSrv.success('保存成功');
+        this.modal.close(true);
+      });
+    } else {
+      this.http.post(`${this.url}`, data).subscribe(res => {
+        this.msgSrv.success('更新成功');
+        this.modal.close(true);
+      });
+    }
   }
 
   close() {

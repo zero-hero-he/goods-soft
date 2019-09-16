@@ -10,14 +10,10 @@ export class ProBatchViewComponent implements OnInit {
   record: any = {};
   i: any;
 
-  constructor(
-    private modal: NzModalRef,
-    public msgSrv: NzMessageService,
-    public http: _HttpClient
-  ) { }
+  constructor(private modal: NzModalRef, public msgSrv: NzMessageService, public http: _HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get(`/user/${this.record.id}`).subscribe(res => this.i = res);
+    this.http.get(`/batch/get/${this.record.id}`).subscribe(res => (this.i = res.data));
   }
 
   close() {
