@@ -8,6 +8,7 @@ import com.sw.goods.repository.CityRepository;
 import com.sw.goods.repository.CountryRepository;
 import com.sw.goods.repository.ProvinceRepository;
 import com.sw.goods.service.BrandService;
+import com.sw.goods.util.ToolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand add(Brand brand) {
         setArea(brand);
+        brand.setNo(ToolUtil.timeNo());
         return brandRepository.save(brand);
     }
 

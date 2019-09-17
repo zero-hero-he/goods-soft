@@ -82,10 +82,6 @@ public class Channel extends BaseInfo implements Serializable {
     @Column(name = "no", length = 30, unique = true)
     @Length(max = 30, message = "编码长度最长为30")
     private String no;
-//
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "IMAGE_ID")
-//    private List<Image> images;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
     @JoinTable(

@@ -5,6 +5,7 @@ import com.sw.goods.entity.Channel;
 import com.sw.goods.exception.SoftException;
 import com.sw.goods.repository.*;
 import com.sw.goods.service.ChannelService;
+import com.sw.goods.util.ToolUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public Channel add(Channel channel) {
         setArea(channel);
+        channel.setNo(ToolUtil.timeNo());
         return channelRepository.save(channel);
     }
 
