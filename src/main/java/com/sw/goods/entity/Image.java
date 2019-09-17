@@ -1,5 +1,6 @@
 package com.sw.goods.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -22,7 +23,15 @@ import java.io.Serializable;
 public class Image extends BaseInfo implements Serializable {
     private static final long serialVersionUID = -8200453490452804291L;
 
-    @Column(name = "NAME", length = 512, nullable = false)
+    /**
+     * 编号
+     */
+    @Column(name = "no", length = 30)
+    @Length(max = 30, message = "编码长度最长为30")
+    @JsonIgnore
+    private String no;
+
+    @Column(name = "IMAGE_URL", length = 512, nullable = false)
     @NotBlank(message = "图片地址不能为空")
     @Length(max = 512, message = "图片地址最大长度512")
     private String imageUrl;

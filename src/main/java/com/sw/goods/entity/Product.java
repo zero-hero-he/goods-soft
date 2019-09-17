@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+
 /**
  * @author songwen
  * gmail: zero.hero.he@gmail.com
@@ -40,15 +42,29 @@ public class Product extends BaseInfo implements Serializable {
      * 规格
      */
     @Column(name = "SPECIFICATION", length = 30)
-    @Length(max = 40, message = "规格长度最长为40")
+    @Length(max = 30, message = "规格长度最长为40")
     private String specification;
+
+    /**
+     * 编号
+     */
+    @Column(name = "no", length = 30)
+    @Length(max = 30, message = "编码长度最长为30")
+    private String no;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BRAND_ID")
     private Brand brand;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IMAGE_ID")
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "IMAGE_ID")
+//    private List<Image> images;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
+    @JoinTable(
+            name = "IMAGE_LIST",
+            joinColumns = {@JoinColumn(name = "NO", referencedColumnName = "NO")},
+            inverseJoinColumns = {@JoinColumn(name = "IMAGE_ID", referencedColumnName = "ID")})
     private List<Image> images;
 
 

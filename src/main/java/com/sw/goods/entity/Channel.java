@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
+import static javax.persistence.CascadeType.ALL;
+
 /**
  * 渠道
  * @author songwen
@@ -74,7 +76,21 @@ public class Channel extends BaseInfo implements Serializable {
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IMAGE_ID")
+    /**
+     * 编号
+     */
+    @Column(name = "no", length = 30, unique = true)
+    @Length(max = 30, message = "编码长度最长为30")
+    private String no;
+//
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "IMAGE_ID")
+//    private List<Image> images;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
+    @JoinTable(
+            name = "IMAGE_LIST",
+            joinColumns = {@JoinColumn(name = "NO", referencedColumnName = "NO")},
+            inverseJoinColumns = {@JoinColumn(name = "IMAGE_ID", referencedColumnName = "ID")})
     private List<Image> images;
 }

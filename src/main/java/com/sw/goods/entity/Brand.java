@@ -77,8 +77,18 @@ public class Brand extends BaseInfo implements Serializable {
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
 
+    /**
+     * 编号
+     */
+    @Column(name = "no", length = 30, unique = true)
+    @Length(max = 30, message = "编码长度最长为30")
+    private String no;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
-    @JoinColumn(name = "IMAGE_ID")
+    @JoinTable(
+            name = "IMAGE_LIST",
+            joinColumns = {@JoinColumn(name = "NO", referencedColumnName = "NO")},
+            inverseJoinColumns = {@JoinColumn(name = "IMAGE_ID", referencedColumnName = "ID")})
     private List<Image> images;
 
 
