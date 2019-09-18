@@ -11,8 +11,17 @@ import { AreaSelectComponent } from '../area/area-select/area-select.component';
 import { ProBatchComponent } from './batch/batch.component';
 import { ProBatchEditComponent } from './batch/edit/edit.component';
 import { ProBatchViewComponent } from './batch/view/view.component';
+import { ProProductComponent } from './product/product.component';
+import { ProProductEditComponent } from './product/edit/edit.component';
+import { ProProductViewComponent } from './product/view/view.component';
 
-const COMPONENTS = [ProBrandComponent, ProChannelComponent, AreaSelectComponent, ProBatchComponent];
+const COMPONENTS = [
+  ProBrandComponent,
+  ProChannelComponent,
+  AreaSelectComponent,
+  ProBatchComponent,
+  ProProductComponent,
+];
 const COMPONENTS_NOROUNT = [
   ProBrandEditComponent,
   ProBrandViewComponent,
@@ -20,6 +29,8 @@ const COMPONENTS_NOROUNT = [
   ProChannelViewComponent,
   ProBatchEditComponent,
   ProBatchViewComponent,
+  ProProductEditComponent,
+  ProProductViewComponent,
 ];
 
 @NgModule({

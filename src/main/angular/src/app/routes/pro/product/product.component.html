@@ -1,0 +1,84 @@
+<page-header [title]="'产品管理'"></page-header>
+
+<nz-card [nzBordered]="false">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="4" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="name">产品名称</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.name" name="name" value='' placeholder="请输入" id="name" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="4" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="no">产品编号</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.no" name="no" value='' placeholder="请输入" id="no" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="4" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="model">型号</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.model" name="model" value='' placeholder="请输入" id="model" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="4" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="brandId">型号</nz-form-label>
+          <nz-form-control>
+            <!-- <input nz-input [(ngModel)]="q.brandId" name="brandId" value='' placeholder="请输入" id="brandId" /> -->
+            <nz-select name="brand" style="width: 100%" nzShowSearch nzAllowClear nzPlaceHolder="选择品牌"
+              [(ngModel)]="q.brandId" (nzOnSearch)="searchBrand($event)">
+              <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.provinceId">
+              </nz-option>
+            </nz-select>
+            <!-- <nz-select style="width: 100%" nzShowSearch nzAllowClear nzPlaceHolder="选择品牌" [(ngModel)]="q.brandId">
+              <nz-option nzLabel="Jack" nzValue="jack"></nz-option>
+              <nz-option nzLabel="Lucy" nzValue="lucy"></nz-option>
+              <nz-option nzLabel="Tom" nzValue="tom"></nz-option>
+            </nz-select> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col [nzSpan]="8">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+      </div>
+    </div>
+  </form>
+
+  <button nz-button (click)="add()" [nzType]="'primary'">
+    <i nz-icon nzType="plus"></i>
+    <span>新建</span>
+  </button>
+  <ng-container *ngIf="selectedRows.length > 0">
+    <button nz-button nz-dropdown [nzDropdownMenu]="batchMenu" nzPlacement="bottomLeft">
+      更多操作
+      <i nz-icon nzType="down"></i>
+    </button>
+    <nz-dropdown-menu #batchMenu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="remove()">删除</li>
+      </ul>
+    </nz-dropdown-menu>
+  </ng-container>
+  <div class="my-md">
+    <nz-alert [nzType]="'info'" [nzShowIcon]="true" [nzMessage]="message">
+      <ng-template #message>
+        已选择
+        <strong class="text-primary">{{ selectedRows.length }}</strong> 项
+        <a *ngIf="selectedRows.length > 0" (click)="st.clearCheck()" class="ml-lg">清空</a>
+      </ng-template>
+    </nz-alert>
+  </div>
+  <st #st [columns]="columns" [data]="data" [total]="total" [loading]="loading" [page]="pages" (error)="stError($event)"
+    (change)="stChange($event)">
+  </st>
+
+</nz-card>
