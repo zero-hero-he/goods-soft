@@ -28,15 +28,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @return
      */
     @Query(value = "select * from product where 1=1 " +
-            "and IF(:brandId IS NOT NULL ,brand_id = :brandId ,1 = 1 ) " +
-            "and IF(:name IS NOT NULL ,name LIKE CONCAT('%',:name,'%') ,1 = 1 ) " +
-            "and IF(:no IS NOT NULL ,`no` LIKE CONCAT('%',:no,'%') ,1 = 1 ) " +
-            "and IF(:model IS NOT NULL ,model LIKE CONCAT('%',:model,'%') ,1 = 1 )",
+            "and CASE WHEN :brandId IS NOT NULL THEN brand_id = :brandId ELSE 1=1 END " +
+            "and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END " +
+            "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END " +
+            "and CASE WHEN :model IS NOT NULL THEN model LIKE CONCAT('%',:model,'%') ELSE 1=1 END ",
             countQuery = "select count(*) from product where 1=1 " +
-                    "and IF(:brandId IS NOT NULL ,brand_id = :brandId ,1 = 1 ) " +
-                    "and IF(:name IS NOT NULL ,name LIKE CONCAT('%',:name,'%') ,1 = 1 ) " +
-                    "and IF(:no IS NOT NULL ,`no` LIKE CONCAT('%',:no,'%') ,1 = 1 ) " +
-                    "and IF(:model IS NOT NULL ,model LIKE CONCAT('%',:model,'%') ,1 = 1 )",
+                    "and CASE WHEN :brandId IS NOT NULL THEN brand_id = :brandId ELSE 1=1 END " +
+                    "and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END " +
+                    "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END " +
+                    "and CASE WHEN :model IS NOT NULL THEN model LIKE CONCAT('%',:model,'%') ELSE 1=1 END ",
             nativeQuery = true)
     Page<Product> queryProduct(Long brandId, String name, String no, String model, Pageable pageable);
 

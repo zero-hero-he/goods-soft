@@ -54,6 +54,8 @@ public class Product extends BaseInfo implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BRAND_ID")
+    @NotNull
+    @NotBlank(message = "品牌不能为空")
     private Brand brand;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = ALL)
