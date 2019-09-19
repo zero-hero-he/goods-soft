@@ -28,7 +28,7 @@ public class Product extends BaseInfo implements Serializable {
     @Column(name = "NAME", length = 30)
     @NotNull
     @NotBlank(message = "产品名称不能为空")
-    @Length(min = 1, max = 40, message = "产品名称长度为1~40")
+    @Length(min = 1, max = 30, message = "产品名称长度为1~30")
     private String name;
 
     /**
@@ -42,7 +42,7 @@ public class Product extends BaseInfo implements Serializable {
      * 规格
      */
     @Column(name = "SPECIFICATION", length = 30)
-    @Length(max = 30, message = "规格长度最长为40")
+    @Length(max = 30, message = "规格长度最长为30")
     private String specification;
 
     /**

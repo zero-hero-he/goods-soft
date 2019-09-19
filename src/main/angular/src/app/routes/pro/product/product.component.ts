@@ -109,6 +109,9 @@ export class ProProductComponent implements OnInit {
     if (this.q.no === null) {
       this.q.no = '';
     }
+    if (this.q.brandId === null) {
+      this.q.brandId = '';
+    }
     this.http
       .get('/product/get', this.q)
       .pipe(tap(() => (this.loading = false)))

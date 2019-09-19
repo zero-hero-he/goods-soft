@@ -34,7 +34,7 @@
             <!-- <input nz-input [(ngModel)]="q.brandId" name="brandId" value='' placeholder="请输入" id="brandId" /> -->
             <nz-select name="brand" style="width: 100%" nzShowSearch nzAllowClear nzPlaceHolder="选择品牌"
               [(ngModel)]="q.brandId" (nzOnSearch)="searchBrand($event)">
-              <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.provinceId">
+              <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.id">
               </nz-option>
             </nz-select>
             <!-- <nz-select style="width: 100%" nzShowSearch nzAllowClear nzPlaceHolder="选择品牌" [(ngModel)]="q.brandId">
