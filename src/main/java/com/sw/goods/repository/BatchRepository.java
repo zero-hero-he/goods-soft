@@ -18,11 +18,11 @@ import java.util.List;
 public interface BatchRepository extends JpaRepository<Batch, Long> {
 
     @Query(value = "select * from batch where 1=1 " +
-            "and name LIKE CONCAT('%',:name,'%')" +
-            "and batch_id LIKE CONCAT('%',:batchId,'%')",
+            "and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END " +
+            "and CASE WHEN :batchId IS NOT NULL THEN batch_id LIKE CONCAT('%',:batchId,'%') ELSE 1=1 END ",
             countQuery = "select count(*) from batch where 1=1 " +
-                    "and name LIKE CONCAT('%',:name,'%')" +
-                    "and batch_id LIKE CONCAT('%',:batchId,'%')",
+                    "and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END " +
+                    "and CASE WHEN :batchId IS NOT NULL THEN batch_id LIKE CONCAT('%',:batchId,'%') ELSE 1=1 END ",
             nativeQuery = true)
     Page<Batch> findByNameLikeAndBatchIdLike(String batchId, String name, Pageable pageable);
 

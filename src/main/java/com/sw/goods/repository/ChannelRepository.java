@@ -21,8 +21,8 @@ public interface ChannelRepository extends JpaRepository<Channel, Long> {
             "left join province on channel.province_id = province.province_id " +
             "left join city on channel.city_id = city.city_id " +
             "left join country on channel.country_id = country.country_id " +
-            "where channel.name like concat('%',:name,'%')",
-            countQuery = "select count(*) from channel where name like concat('%',:name,'%')",
+            "where 1=1 and CASE WHEN :name IS NOT NULL THEN channel.name LIKE CONCAT('%',:name,'%') ELSE 1=1 END ",
+            countQuery = "select count(*) from channel where 1=1 and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END",
             nativeQuery = true)
     Page<Channel> findByName(String name, Pageable pageable);
 

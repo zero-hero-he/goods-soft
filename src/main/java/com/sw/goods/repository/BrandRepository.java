@@ -21,8 +21,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
             "left join province on brand.province_id = province.province_id " +
             "left join city on brand.city_id = city.city_id " +
             "left join country on brand.country_id = country.country_id " +
-            "where brand.name like concat('%',:name,'%')",
-            countQuery = "select count(*) from brand where name like concat('%',:name,'%')",
+            "where 1=1 and CASE WHEN :name IS NOT NULL THEN brand.name LIKE CONCAT('%',:name,'%') ELSE 1=1 END ",
+            countQuery = "select count(*) from brand where 1=1 and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END",
             nativeQuery = true)
     Page<Brand> findByName(String name, Pageable pageable);
 
