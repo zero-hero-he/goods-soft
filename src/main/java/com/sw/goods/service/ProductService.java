@@ -19,7 +19,7 @@ public interface ProductService {
 
     Product getById(long id);
 
-    Product add(Product product);
+    Product add(Product product) throws SoftException;
 
     Product update(Product product) throws SoftException;
 

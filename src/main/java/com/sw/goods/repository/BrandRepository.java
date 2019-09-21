@@ -31,4 +31,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     @Query(value = "delete from brand where id in (?1)", nativeQuery = true)
     int deleteBatch(List<Long> ids);
 
+    Brand getById(Long id);
+
 }

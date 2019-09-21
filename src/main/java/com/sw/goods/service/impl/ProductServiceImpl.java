@@ -1,8 +1,10 @@
 package com.sw.goods.service.impl;
 
 import com.sw.goods.constent.Result;
+import com.sw.goods.entity.Brand;
 import com.sw.goods.entity.Product;
 import com.sw.goods.exception.SoftException;
+import com.sw.goods.repository.BrandRepository;
 import com.sw.goods.repository.ProductRepository;
 import com.sw.goods.service.BrandService;
 import com.sw.goods.service.ProductService;
@@ -28,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Autowired
-    private BrandService brandService;
+    private BrandRepository brandRepository;
 
     @Override
     public Page<Product> queryProduct(Long brandId, String name, String no, String model, int pageNumber, int pageSize) {
@@ -47,8 +49,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product add(Product product) {
-        product.setBrand(brandService.getById(product.getBrand().getId()));
+    public Product add(Product product) throws SoftException {
+        if (productRepository.existsByNo(product.getNo())) {
+            throw new SoftException(Result.ADD_FAIL, "已存在产品编码，请更换重试!");
+        }
+        Brand brand = brandRepository.getById(product.getBrand().getId());
+        product.setBrand(brand);
         if (StringUtils.isBlank(product.getNo())) {
             product.setNo(ToolUtil.timeNo());
         }
@@ -60,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
         if(!productRepository.existsById(product.getId())) {
             throw new SoftException(Result.UPDATE_FAIL, "不存在这条记录!");
         }
-        product.setBrand(brandService.getById(product.getBrand().getId()));
+        product.setBrand(brandRepository.getById(product.getBrand().getId()));
         return productRepository.save(product);
     }
 

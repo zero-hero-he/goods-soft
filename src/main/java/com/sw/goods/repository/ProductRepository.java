@@ -42,6 +42,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByNameIsLike(String name);
 
+    boolean existsByNo(String no);
+
     @Modifying
     @Transactional(rollbackFor = Exception.class)
     @Query(value = "delete from product where id in (?1)", nativeQuery = true)

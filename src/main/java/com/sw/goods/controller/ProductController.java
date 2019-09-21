@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/add")
-    public HttpResult<Product> add(@RequestBody Product product) {
+    public HttpResult<Product> add(@RequestBody Product product) throws SoftException {
         return new HttpResult<>(productService.add(product));
     }
 

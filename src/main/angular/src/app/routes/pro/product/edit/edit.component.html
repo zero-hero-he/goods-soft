@@ -3,6 +3,16 @@
 </div>
 <nz-spin class="modal-spin" [nzSpinning]="isSpinning">
   <sf #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="record" button="none">
+    <ng-template sf-template="no" let-me let-ui="ui" let-schema="schema">
+      <nz-input-group [nzSuffix]="noTemplate">
+        <input type="text" [attr.id]="me.id" [disabled]="me.disabled" [attr.disabled]="me.disabled" [nzSize]="ui.size"
+          [ngModel]="me.formProperty.value" (ngModelChange)="me.setValue($event)" nz-input placeholder="为空会自动生成编码" />
+      </nz-input-group>
+      <ng-template #noTemplate>
+        <i nz-icon nz-tooltip nzTitle="生成编码..." [nzType]="'sync'" [nzSpin]="true" (click)="getNo()"></i>
+      </ng-template>
+    </ng-template>
+
     <div class="modal-footer">
       <button nz-button type="button" (click)="close()">关闭</button>
       <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid"

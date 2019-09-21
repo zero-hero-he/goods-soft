@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzModalRef, NzMessageService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema, SFSchemaEnum } from '@delon/form';
+import { SFSchema, SFUISchema, SFSchemaEnum, SFComponent } from '@delon/form';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -16,6 +16,7 @@ export class ProProductEditComponent implements OnInit {
 
   private defaultBrandsEnum = new BehaviorSubject<any>({});
 
+  @ViewChild('sf', { static: false }) sf: SFComponent;
   schema: SFSchema = {
     properties: {
       id: { type: 'number', title: 'ID' },
@@ -45,8 +46,7 @@ export class ProProductEditComponent implements OnInit {
       widget: 'string',
     },
     $no: {
-      widget: 'string',
-      placeholder: '为空会自动生成编码',
+      widget: 'custom',
     },
     $brandId: {
       widget: 'select',
@@ -110,7 +110,7 @@ export class ProProductEditComponent implements OnInit {
 
   save(value: any) {
     const data = JSON.parse(JSON.stringify(value));
-
+    data.brand = { id: data.brandId };
     if (this.record.pageType === 'add') {
       this.http.put(`${this.url}`, data).subscribe(res => {
         this.msgSrv.success('保存成功');
@@ -122,6 +122,16 @@ export class ProProductEditComponent implements OnInit {
         this.modal.close(true);
       });
     }
+  }
+
+  getNo() {
+    console.log('getNo', this.record.pageType);
+    if (this.record.pageType !== 'add') {
+      return;
+    }
+    this.http.get(`/tool/no`).subscribe(res => {
+      this.sf.setValue('/no', res.data);
+    });
   }
 
   close() {
