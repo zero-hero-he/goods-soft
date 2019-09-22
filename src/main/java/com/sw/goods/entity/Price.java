@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -67,5 +66,8 @@ public class Price extends BaseInfo implements Serializable {
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
 
+    @Column(name = "no", length = 30)
+    @Length(max = 30, message = "编码长度最长为30")
+    private String no;
 
 }

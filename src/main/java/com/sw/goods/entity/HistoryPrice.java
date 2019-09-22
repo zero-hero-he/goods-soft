@@ -66,5 +66,9 @@ public class HistoryPrice extends BaseInfo implements Serializable {
     @Length(max = 512, message = "备注的最大长度为512")
     private String note;
 
+    @Column(name = "no", length = 30)
+    @Length(max = 30, message = "编码长度最长为30")
+    private String no;
+
 
 }
