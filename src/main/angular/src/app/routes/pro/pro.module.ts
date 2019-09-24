@@ -14,6 +14,12 @@ import { ProBatchViewComponent } from './batch/view/view.component';
 import { ProProductComponent } from './product/product.component';
 import { ProProductEditComponent } from './product/edit/edit.component';
 import { ProProductViewComponent } from './product/view/view.component';
+import { ProPriceComponent } from './price/price.component';
+import { ProPriceEditComponent } from './price/edit/edit.component';
+import { ProPriceViewComponent } from './price/view/view.component';
+import { ProHistoryPriceComponent } from './history-price/history-price.component';
+import { ProHistoryPriceEditComponent } from './history-price/edit/edit.component';
+import { ProHistoryPriceViewComponent } from './history-price/view/view.component';
 
 const COMPONENTS = [
   ProBrandComponent,
@@ -21,6 +27,8 @@ const COMPONENTS = [
   AreaSelectComponent,
   ProBatchComponent,
   ProProductComponent,
+  ProPriceComponent,
+  ProHistoryPriceComponent,
 ];
 const COMPONENTS_NOROUNT = [
   ProBrandEditComponent,
@@ -31,6 +39,10 @@ const COMPONENTS_NOROUNT = [
   ProBatchViewComponent,
   ProProductEditComponent,
   ProProductViewComponent,
+  ProPriceEditComponent,
+  ProPriceViewComponent,
+  ProHistoryPriceEditComponent,
+  ProHistoryPriceViewComponent,
 ];
 
 @NgModule({
