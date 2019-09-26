@@ -34,15 +34,6 @@ export class ProProductComponent implements OnInit {
 
   selectedRows: STData[] = [];
 
-  addData: any = {
-    name: '',
-    model: '',
-    specification: '',
-    no: '',
-    brandId: '',
-    images: [],
-  };
-
   @ViewChild('st', { static: false }) st: STComponent;
   columns: STColumn[] = [
     { title: '', index: 'key', type: 'checkbox' },

@@ -29,18 +29,6 @@ export class ProChannelComponent implements OnInit {
 
   selectedRows: STData[] = [];
 
-  addData: any = {
-    name: '',
-    fullName: '',
-    contact: '',
-    province: {},
-    city: {},
-    country: {},
-    address: '',
-    note: '',
-    images: [],
-  };
-
   @ViewChild('st', { static: false }) st: STComponent;
 
   columns: STColumn[] = [

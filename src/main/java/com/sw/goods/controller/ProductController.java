@@ -32,7 +32,7 @@ public class ProductController {
 
     @GetMapping("/name")
     public HttpResult<List<Product>> get(String name) {
-        return new HttpResult<>(productService.getByName("%" + name + "%"));
+        return new HttpResult<>(productService.getByName(name));
     }
 
     @GetMapping("/get/{id}")

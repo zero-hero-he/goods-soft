@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface PriceService {
 
-    Page<Price> queryPrice(List<Long> productIds, List<Long> channelIds, String no, int pageNumber, int pageSize);
+    Page<Price> queryPrice(Long[] productIds, Long[] channelIds, String no, int pageNumber, int pageSize);
 
     Price getById(long id);
 

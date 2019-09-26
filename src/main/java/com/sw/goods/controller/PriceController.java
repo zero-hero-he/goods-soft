@@ -26,7 +26,7 @@ public class PriceController {
 
 
     @GetMapping("/get")
-    public HttpResult<PageResult<Price>> get(List<Long> productIds, List<Long> channelIds, String no, BaseRequestInfo baseRequestInfo) {
+    public HttpResult<PageResult<Price>> get(Long[] productIds, Long[] channelIds, String no, BaseRequestInfo baseRequestInfo) {
         return new HttpResult<>(new PageResult<>(priceService.queryPrice(productIds, channelIds, no, baseRequestInfo.getPi(), baseRequestInfo.getPs())));
     }
 

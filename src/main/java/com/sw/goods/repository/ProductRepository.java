@@ -40,6 +40,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             nativeQuery = true)
     Page<Product> queryProduct(Long brandId, String name, String no, String model, Pageable pageable);
 
+    @Query(value = "select * from product where 1=1 " +
+            "and CASE WHEN :name IS NOT NULL THEN name LIKE CONCAT('%',:name,'%') ELSE 1=1 END ",
+            nativeQuery = true)
     List<Product> findByNameIsLike(String name);
 
     boolean existsByNo(String no);

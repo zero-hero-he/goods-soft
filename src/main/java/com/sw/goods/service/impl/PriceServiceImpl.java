@@ -40,8 +40,18 @@ public class PriceServiceImpl implements PriceService {
     private HistoryPriceService historyPriceService;
 
     @Override
-    public Page<Price> queryPrice(List<Long> productIds, List<Long> channelIds, String no, int pageNumber, int pageSize) {
+    public Page<Price> queryPrice(Long[] productIds, Long[] channelIds, String no, int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        if ((productIds == null || productIds.length == 0)
+                && (channelIds == null || channelIds.length == 0)) {
+            return priceRepository.queryPrice(no, pageable);
+        }
+        if (productIds == null || productIds.length == 0) {
+            return priceRepository.queryPriceP(channelIds, no, pageable);
+        }
+        if (channelIds == null || channelIds.length == 0) {
+            return priceRepository.queryPriceC(productIds, no, pageable);
+        }
         return priceRepository.queryPrice(productIds, channelIds, no, pageable);
     }
 

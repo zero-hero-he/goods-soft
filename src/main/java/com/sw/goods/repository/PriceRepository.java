@@ -20,21 +20,45 @@ public interface PriceRepository extends JpaRepository<Price, Long> {
     /**
      * 查询价格
      * @param productIds
-     * @param channelIds
      * @param no
      * @param pageable
      * @return
      */
     @Query(value = "select * from price where 1=1 " +
-            "and CASE WHEN :productId IS NOT NULL THEN PRODUCT_ID in (?1) ELSE 1=1 END " +
-            "and CASE WHEN :channelId IS NOT NULL THEN CHANNEL_ID in (?2) ELSE 1=1 END " +
+            "and PRODUCT_ID in (:productIds) " +
             "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
             countQuery = "select count(*) from product where 1=1 " +
-                    "and CASE WHEN :productId IS NOT NULL THEN PRODUCT_ID in (?1) ELSE 1=1 END " +
-                    "and CASE WHEN :channelId IS NOT NULL THEN CHANNEL_ID in (?2) ELSE 1=1 END " +
+                    "and PRODUCT_ID in (:productIds) " +
                     "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
             nativeQuery = true)
-    Page<Price> queryPrice(List<Long> productIds, List<Long> channelIds, String no, Pageable pageable);
+    Page<Price> queryPriceP(Long[] productIds, String no, Pageable pageable);
+
+    @Query(value = "select * from price where 1=1 " +
+            "and CHANNEL_ID in (:channelIds) " +
+            "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            countQuery = "select count(*) from product where 1=1 " +
+                    "and CHANNEL_ID in (:channelIds) " +
+                    "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            nativeQuery = true)
+    Page<Price> queryPriceC(Long[] channelIds, String no, Pageable pageable);
+
+    @Query(value = "select * from price where 1=1 " +
+            "and PRODUCT_ID in (:productIds) " +
+            "and CHANNEL_ID in (:channelIds) " +
+            "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            countQuery = "select count(*) from product where 1=1 " +
+                    "and PRODUCT_ID in (:productIds) " +
+                    "and CHANNEL_ID in (:channelIds) " +
+                    "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            nativeQuery = true)
+    Page<Price> queryPrice(Long[] productIds, Long[] channelIds, String no, Pageable pageable);
+
+    @Query(value = "select * from price where 1=1 " +
+            "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            countQuery = "select count(*) from product where 1=1 " +
+                    "and CASE WHEN :no IS NOT NULL THEN `no` LIKE CONCAT('%',:no,'%') ELSE 1=1 END ",
+            nativeQuery = true)
+    Page<Price> queryPrice(String no, Pageable pageable);
 
     boolean existsByNo(String no);
 
